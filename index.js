@@ -908,17 +908,11 @@ const {
       conn.serializeM = mek => sms(conn, mek, store);
   }
 
-    app.use(express.static(path.join(__dirname, 'lib')));
+  app.use(express.static(path.join(__dirname, 'lib')));
 
-    // Serve Dml.html as the application start page
-    app.get(['/', '/Dml.html'], (req, res) => {
-        res.sendFile(path.join(__dirname, 'Dml.html'), (err) => {
-            if (err) {
-                console.error('Failed to send Dml.html:', err);
-                res.status(500).send('Error loading start page');
-            }
-        });
-    });
+  app.get('/', (req, res) => {
+    res.redirect('/Dml.html');
+  });
   
   app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
   
