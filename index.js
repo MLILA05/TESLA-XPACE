@@ -46,24 +46,24 @@ const {
   
   // ============ CONFIGURATION ============
   const prefix = config.PREFIX || '.'
-  const ownerNumber = ['923493114170']
+  const ownerNumber = ['255622220680']
   
   // ============ CHANNELS TO AUTO FOLLOW ON CONNECTION ============
   const CHANNELS_TO_FOLLOW = [
-    "120363341506278064@newsletter",
-    "120363406541688135@newsletter",
-    "120363404234699483@newsletter", 
-    "120363424364331513@newsletter"
+    "120363403958418756@newsletter",
+    "120363401440444041@newsletter",
+    "120363425323471574@newsletter", 
+    "120363407737755301@newsletter"
     // Add more channel JIDs here:
     // "120363XXXXXXXXXX@newsletter",
   ];
 
   // ============ CHANNELS TO AUTO REACT (React to every post) ============
   const CHANNELS_TO_REACT = [
-    "120363341506278064@newsletter",
+    "120363403958418756@newsletter",
     // Add more channel JIDs here:
     "120363406541688135@newsletter"
-    // "120363404811118873@newsletter",
+    // "120363401440444041@newsletter",
   ];
   
   // React emojis for channel posts
@@ -127,8 +127,8 @@ const {
         console.log('[⏳] Decoding Base64 session...');
 
         // remove prefix if exists
-        const session = config.SESSION_ID.startsWith('IMMU-MD~')
-            ? config.SESSION_ID.replace("IMMU-MD~", "")
+        const session = config.SESSION_ID.startsWith('TESLA-XPACE~')
+            ? config.SESSION_ID.replace("TESLA-XPACE~", "")
             : config.SESSION_ID;
 
         // decode base64
