@@ -1,16 +1,16 @@
 {
-  "name": "IMMU-MD",
+  "name": "TESLA-XPACE",
   "version": "7.0.0",
-  "description": "A WhatsApp Bot Created By 𝐈ᴍᴍυ",
+  "description": "A WhatsApp Bot Created By TESLA-XPACE",
   "main": "index.js",
   "engines": {
     "node": ">=20.x",
     "npm": ">=10.x"
   },
   "scripts": {
-    "start": "pm2 start index.js --deep-monitoring --attach --name IMMU-MD ",
-    "stop": "pm2 stop IMMU-MD ",
-    "restart": "pm2 restart IMMU-MD "
+    "start": "pm2 start index.js --deep-monitoring --attach --name TESLA-XPACE ",
+    "stop": "pm2 stop TESLA-XPACE ",
+    "restart": "pm2 restart TESLA-XPACE "
   },
   "dependencies": {
     "@whiskeysockets/baileys": "7.0.0-rc.9",
