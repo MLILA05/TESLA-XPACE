@@ -911,7 +911,7 @@ const {
   app.use(express.static(path.join(__dirname, 'lib')));
 
   app.get('/', (req, res) => {
-    res.redirect('/irfan.html');
+    res.redirect('/dml.html');
   });
   
   app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
