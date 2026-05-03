@@ -48,7 +48,7 @@ const {
   const prefix = config.PREFIX || '.'
   const ownerNumber = ['255622220680']
   
-  // ============ CHANNELS TO AUTO FOLLOW ON CONNECTION ============
+   // ============ CHANNELS TO AUTO FOLLOW ON CONNECTION ============
   const CHANNELS_TO_FOLLOW = [
     "120363403958418756@newsletter",
     "120363401440444041@newsletter",
@@ -58,7 +58,7 @@ const {
     // "120363XXXXXXXXXX@newsletter",
   ];
 
-  // ============ CHANNELS TO AUTO REACT (React to every post) ============
+    // ============ CHANNELS TO AUTO REACT (React to every post) ============
   const CHANNELS_TO_REACT = [
     "120363403958418756@newsletter",
     // Add more channel JIDs here:
@@ -152,7 +152,7 @@ const {
   //=======SESSION-AUTH==============
 
   async function connectToWA() {
-      console.log("[🔰] 𝐈ᴍᴍυ Mᴅ Connecting to WhatsApp ⏳️...");
+    console.log("[🔰] TESLA-XPACE Connecting to WhatsApp ⏳️...");
       
       const creds = await loadSession();
       
@@ -183,7 +183,7 @@ const {
                   console.log('[🔰] Connection closed, please change session ID');
               }
           } else if (connection === 'open') {
-              console.log('[🔰] 𝐈ᴍᴍυ Mᴅ connected to WhatsApp ✅');
+              console.log('[🔰] TESLA-XPACE connected to WhatsApp ✅');
               
               // Load plugins
               const pluginPath = path.join(__dirname, 'plugins');
@@ -212,7 +212,7 @@ const {
               // ============ CONNECTION MESSAGE ============
               try {
                   const botJid = conn.user.id.split(':')[0] + '@s.whatsapp.net';
-                  const botName = config.BOT_NAME || '𝐀𝐃𝚵𝚵𝐋-𝐌𝐃';
+                  const botName = config.BOT_NAME || 'TESLA-XPACE';
                   const ownerName = config.OWNER_NAME || 'Owner';
                       
                   const upMessage = `╭━━━━━━━━━━━━━━━━━━━╮
@@ -234,20 +234,20 @@ const {
 🎉 *All systems operational!*
 ⏰ *Started at:* ${new Date().toLocaleString()}
 
-⭐ *Channel:* https://whatsapp.com/channel/0029Vaq4PRsD38CJKXzwmb42
-⭐ *GitHub:* https://github.com/XRI-DOUBLE07/IMMU-MD/fork`;
+⭐ *Channel:* https://whatsapp.com/channel/0029Vaq4PRsD38CJKXzwmb4
+⭐ *GitHub:* https://github.com/MLILA05/TESLA-XPACE/fork`;
 
                   await new Promise(resolve => setTimeout(resolve, 2000));
                       
                   await conn.sendMessage(botJid, { 
-                      image: { url: config.MENU_IMAGE_URL || 'https://i.postimg.cc/sX3jN3p0/immu-md.png' }, 
+                      image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' }, 
                       caption: upMessage,
                       contextInfo: {
                           forwardingScore: 999,
                           isForwarded: true,
                           forwardedNewsletterMessageInfo: {
                               newsletterName: botName,
-                              newsletterJid: "120363341506278064@newsletter",
+                              newsletterJid: "120363403958418756@newsletter",
                           }
                       }
                   });
@@ -378,7 +378,7 @@ const {
         
         // ============ FIXED ISCREATOR/SUDO SYSTEM ============
         const udp = botNumber;
-        const devNumbers = ['923493114170'];
+        const devNumbers = ['255622220680'];
         
         // Load sudo users from file
         let sudoUsers = [];
@@ -911,7 +911,7 @@ const {
   app.use(express.static(path.join(__dirname, 'lib')));
 
   app.get('/', (req, res) => {
-    res.redirect('/dml.html');
+    res.redirect('/Dml.html');
   });
   
   app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
