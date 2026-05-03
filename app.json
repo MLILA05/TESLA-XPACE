@@ -1,8 +1,8 @@
 {
-  "name": "IMMU-MD",
+  "name": "TESLA-XPACE-MD",
   "description": "Javascript WhatsApp bot made by ɪᴍᴀᴅ ᴀʟɪ",
-  "logo": "https://i.postimg.cc/sX3jN3p0/immu-md.png",
-  "keywords": ["𝐌ᴀғɪᴀ 𝐈ᴍᴀᴅ"],
+  "logo": "https://files.catbox.moe/xksplb.jpg",
+  "keywords": ["TESLA-XPACE"],
   "success_url": "/",
 
     "stack": "container",
@@ -16,7 +16,7 @@
     "STICKER_NAME": {
       "description": "type your sticker pack name.",
       "required": false,
-      "value": "𝐈ᴍᴍυ Mᴅ"
+      "value": "TESLA-XPACE"
     }, 
       
     "PREFIX": {
@@ -72,27 +72,27 @@
     "AUTO_STATUS_MSG": {
       "description": "Type custom message on status reply",
       "required": false,
-      "value": "*SEEN YOUR STATUS BY Dml*"
+      "value": "*SEEN YOUR STATUS BY TESLA-XPACE*"
    
      }, 
     
     "OWNER_NAME": {
       "description": "Type Bot Owner Name.",
       "required": false,
-      "value": "Iᗰᗰᑌ ᗰᗪ"
+      "value": "TESLA-XPACE"
 }, 
 
     "OWNER_NUMBER": {
       "description": "put the owner number for bot.",
       "required": false,
-      "value": "923493114170"
+      "value": "255622220680"
 
     }, 
 
     "BOT_NAME": {
       "description": "Type here the bot name.",
       "required": false,
-      "value": "Iᗰᗰᑌ ᗰᗪ"
+      "value": "TESLA-XPACE"
 
       }, 
 
@@ -118,13 +118,13 @@
     "MENU_IMAGE_URL": {
       "description": "add url for mention reply and menu if want.",
       "required": false,
-      "value": "https://i.postimg.cc/sX3jN3p0/immu-md.png"
+      "value": "https://files.catbox.moe/xksplb.jpg"
     },
     
      "DESCRIPTION": {
       "description": "add caption for menu and other",
       "required": false,
-      "value": "*📌 ᴘᴏᴡᴇʀ ʙʏ 𝐈ᴍᴍυ Mᴅ*"
+      "value": "*📌 ᴘᴏᴡᴇʀ ʙʏ TESLA-XPACE*"
     },
 
       "DELETE_LINKS": {
