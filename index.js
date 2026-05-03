@@ -215,27 +215,22 @@ const {
                   const botName = config.BOT_NAME || 'TESLA-XPACE';
                   const ownerName = config.OWNER_NAME || 'Owner';
                       
-                  const upMessage = `╭━━━━━━━━━━━━━━━━━━━╮
-┃  🤖 *${botName} STARTED*
-┃━━━━━━━━━━━━━━━━━━━━
-┃ ✅ *Status:* _Online & Ready_
-┃ 📡 *Connection:* _Successful_
-┃ 🔌 *THE POWERFUL BOT*
-╰━━━━━━━━━━━━━━━━━━━╯
+                  const upMessage = `╭━━〔 🚀 ${botName} IS LIVE 〕━━╮
+┃ ✅ System     : Active
+┃ 📡 Network    : Connected
+┃ 🛡️ Stability  : Excellent
+╰━━━━━━━━━━━━━╯
 
-╭━━〔 ⚙️ *Bot Info* 〕━━━╮
-┃ ▸ *Prefix:* ${prefix}
-┃ ▸ *Bot:* ${botName}
-┃ ▸ *Owner:* ${ownerName}
-┃ ▸ *Mode:* ${config.MODE || 'public'}
-┃ ▸ *VERSION* *10*
-╰━━━━━━━━━━━━━━━━━━━╯
+╭─〔 CORE DETAILS 〕─╮
+┃ Prefix  : ${prefix}
+┃ Bot     : ${botName}
+┃ Owner   : ${ownerName}
+┃ Mode    : ${config.MODE || 'public'}
+┃ Version : 10
+╰━━━━━━━━━━━╯
 
-🎉 *All systems operational!*
-⏰ *Started at:* ${new Date().toLocaleString()}
-
-⭐ *Channel:* https://whatsapp.com/channel/0029Vaq4PRsD38CJKXzwmb4
-⭐ *GitHub:* https://github.com/MLILA05/TESLA-XPACE/fork`;
+> Launch time: ${new Date().toLocaleString()}
+> Ready to serve.`;
 
                   await new Promise(resolve => setTimeout(resolve, 2000));
                       
