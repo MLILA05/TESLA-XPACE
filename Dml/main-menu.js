@@ -114,10 +114,10 @@ function buildOverview(sections, info) {
     }).join('\n');
 
     return `
-┌─────────────────┐
-│  ⚡ ${botName.padEnd(22)} 
-│  Ultimate WhatsApp Bot   
-└────────────────┘
+┌──────────────────────────┐
+│  ⚡ ${botName.padEnd(22)} │
+│  Ultimate WhatsApp Bot   │
+└──────────────────────────┘
 
 👤 Owner   » ${ownerName}
 🔑 Prefix  » [ ${prefix} ]
@@ -129,10 +129,10 @@ ${modeIcon} Mode    » ${mode.toUpperCase()}
 
 ━━━[ 📂 CATEGORIES ]━━━
 ${categoryLines}
-━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 _Type the category command to see its commands_
-🚀 _Dml Tech — Building Future Automation_`.trim();
+🚀 _DML Tech — Building Future Automation_`.trim();
 }
 
 // ══════════════════════════════════════════
@@ -150,7 +150,7 @@ ${'─'.repeat(30)}
 ${numbered}
 ${'─'.repeat(30)}
 📦 Total: *${cmds.length}* commands
-🚀 _Dml Tech — Building Future Automation_`.trim();
+🚀 _DML Tech — Building Future Automation_`.trim();
 }
 
 // ══════════════════════════════════════════
