@@ -9,7 +9,7 @@ cmd({
   pattern: "url2",
   alias: ["imgtourl2", "imgurl2", "url2", "upload2"],
   react: "🖇",
-  desc: "Upload media using Litterbox (Catbox)",
+  desc: "Upload media to Catbox (stable)",
   category: "utility",
   use: ".tourl (reply media)",
   filename: __filename
@@ -22,15 +22,15 @@ cmd({
     const mime = (quoted.msg || quoted).mimetype || "";
 
     if (!mime) {
-      return reply("❌ Reply to an image, video or audio first");
+      return reply("❌ Reply to image, video or audio first");
     }
 
     const buffer = await quoted.download();
 
-    tempFilePath = path.join(os.tmpdir(), `litter_${Date.now()}`);
+    tempFilePath = path.join(os.tmpdir(), `catbox_${Date.now()}`);
     fs.writeFileSync(tempFilePath, buffer);
 
-    // file name
+    // extension
     let ext = ".bin";
     if (mime.includes("image")) ext = ".jpg";
     else if (mime.includes("video")) ext = ".mp4";
@@ -40,12 +40,16 @@ cmd({
     form.append("fileToUpload", fs.createReadStream(tempFilePath), `file${ext}`);
     form.append("reqtype", "fileupload");
 
+    // 🔥 REQUIRED HEADERS (fixes most upload failures)
     const headers = {
       ...form.getHeaders(),
-      "User-Agent": "Mozilla/5.0"
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "Accept": "*/*",
+      "Origin": "https://catbox.moe",
+      "Referer": "https://catbox.moe/"
     };
 
-    // IMPORTANT: Content-Length fix
+    // Fix Content-Length (IMPORTANT)
     const length = await new Promise((resolve, reject) => {
       form.getLength((err, len) => {
         if (err) reject(err);
@@ -55,9 +59,9 @@ cmd({
 
     headers["Content-Length"] = length;
 
-    // 🔥 LITTERBOX API (STABLE)
+    // 🔥 STABLE CATBOX ENDPOINT (NOT INTERNAL LITTERBOX)
     const response = await axios.post(
-      "https://litterbox.catbox.moe/resources/internals/api.php",
+      "https://catbox.moe/user/api.php",
       form,
       { headers }
     );
@@ -65,7 +69,7 @@ cmd({
     const url = response.data?.trim();
 
     if (!url || !url.startsWith("http")) {
-      throw new Error("Upload failed (Litterbox returned empty response)");
+      throw new Error("Upload failed (empty response)");
     }
 
     fs.unlinkSync(tempFilePath);
@@ -76,7 +80,7 @@ cmd({
     else if (mime.includes("audio")) type = "Audio";
 
     return reply(
-      `*${type} Uploaded Successfully (Litterbox)*\n\n` +
+      `*${type} Uploaded Successfully*\n\n` +
       `*Size:* ${buffer.length} bytes\n` +
       `*URL:* ${url}\n\n` +
       `> TESLA-XPACE 💜`
@@ -91,3 +95,12 @@ cmd({
     return reply("❌ Upload failed: " + (err.message || err));
   }
 });
+
+// helper
+function formatBytes(bytes) {
+  if (!bytes) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+}
