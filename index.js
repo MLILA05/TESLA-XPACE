@@ -215,19 +215,22 @@ const {
                   const botName = config.BOT_NAME || 'TESLA-XPACE';
                   const ownerName = config.OWNER_NAME || 'Owner';
                       
-                  const upMessage = `╭━━〔 🚀 ${botName} IS LIVE 〕━━╮
+                  const upMessage = `╭━〔 🚀 ${botName} IS LIVE 〕━╮
 ┃ ✅ System     : Active
 ┃ 📡 Network    : Connected
 ┃ 🛡️ Stability  : Excellent
-╰━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━╯
 
 ╭─〔 CORE DETAILS 〕─╮
-┃ Prefix  : ${prefix}
-┃ Bot     : ${botName}
-┃ Owner   : ${ownerName}
-┃ Mode    : ${config.MODE || 'public'}
-┃ Version : 10
-╰━━━━━━━━━━━╯
+┃ Prefix : ${prefix}
+┃ Bot    : ${botName}
+┃ Owner  : ${ownerName}
+┃ Mode   : ${config.MODE || 'public'}
+╰━━━━━━━━━━━━╯
+
+╭─〔 FREE BOT LINK 〕─╮
+┃ 🌐 minbot.dml-tech.online
+╰━━━━━━━━━━━━╯
 
 > Launch time: ${new Date().toLocaleString()}
 > Ready to serve.`;
