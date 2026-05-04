@@ -27,12 +27,16 @@ cmd({
         const prefix = config.PREFIX || ".";
         const mode = config.MODE || "public";
 
-        const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━╮
+const pushName = m.pushName || "User";
+const senderNumber = m.sender.split("@")[0];
+
+const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━╮
 ┃ Premium WhatsApp Bot
 ╰━━━━━━━━━━━━━━╯
 
 👤 USER
-┃ Name: TESLA-XPACE
+┃ Name: ${pushName}
+┃ Number: ${senderNumber}
 ┃ Bot: ${botName}
 ┃ Prefix: ${prefix}
 
