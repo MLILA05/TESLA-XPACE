@@ -13,132 +13,119 @@ cmd({
 }, async (conn, mek, m, { from, reply }) => {
     try {
 
-        // SYSTEM DATA
         const totalCommands = Object.keys(commands).length;
         const uptime = runtime(process.uptime());
         const ramUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
         const totalRam = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
-        const platform = os.platform();
-        const currentTime = new Date().toLocaleTimeString();
-        const currentDate = new Date().toLocaleDateString();
 
         const botName = config.BOT_NAME || "TESLA-XPACE";
         const ownerName = config.OWNER_NAME || "DEVELOPER";
         const prefix = config.PREFIX || ".";
-        const mode = config.MODE || "public";
 
-        // MENU UI
+        //tesla-xpace
+        const contextInfo = {
+            mentionedJid: [m.sender],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterJid: "120363403958418756@newsletter",
+                newsletterName: botName,
+                serverMessageId: 143
+            }
+        };
+
+        // MAIN MENU
         const menuCaption = `╭━━━〔 🤖 ${botName} 〕━━━╮
-┃ ⚡ ᴘʀᴇᴍɪᴜᴍ ᴡʜᴀᴛsᴀᴘᴘ ʙᴏᴛ
+┃ ⚡ PREMIUM WHATSAPP BOT
 ╰━━━━━━━━━━━━━━━━━━━⬣
 
-╭━━━〔 👑 ʙᴏᴛ ɪɴғᴏ 〕━━━╮
+╭━━━〔 👑 INFO 〕━━━╮
 ┃ 👤 @${m.sender.split("@")[0]}
 ┃ 👑 ${ownerName}
-┃ ⚙️ ${mode}
-┃ 🔣 ${prefix}
-┃ 📦 ${totalCommands}
-╰━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📂 ᴍᴇɴᴜ ʟɪsᴛ 〕━━━╮
-┃ 1 📥 download
-┃ 2 👥 group
-┃ 3 😄 fun
-┃ 4 👑 owner
-┃ 5 🤖 ai
-┃ 6 🎎 anime
-┃ 7 🔄 convert
-┃ 8 📌 other
-┃ 9 💞 reaction
-┃ 10 🏠 main
-╰━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 ⚡ ɪɴsᴛʀᴜᴄᴛɪᴏɴ 〕━━━╮
-┃ reply with number (1-10)
-╰━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 💻 sʏsᴛᴇᴍ 〕━━━╮
-┃ 💾 ${ramUsed} MB / ${totalRam} GB
-┃ 🖥️ ${platform}
+┃ 📦 ${totalCommands} Commands
 ┃ ⏱️ ${uptime}
-┃ 📅 ${currentDate}
-┃ 🕒 ${currentTime}
-╰━━━━━━━━━━━━━━━━━━━⬣`;
+╰━━━━━━━━━━━━━━━━━━━⬣
 
-        // SEND MENU
-        let sentMsg;
-        try {
-            sentMsg = await conn.sendMessage(from, {
-                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' },
-                caption: menuCaption
-            }, { quoted: mek });
-        } catch {
-            sentMsg = await conn.sendMessage(from, {
-                text: menuCaption
-            }, { quoted: mek });
-        }
+╭━━━〔 📂 MENU 〕━━━╮
+┃ 1 ➤ DOWNLOAD
+┃ 2 ➤ GROUP
+┃ 3 ➤ FUN
+┃ 4 ➤ OWNER
+┃ 5 ➤ AI
+┃ 6 ➤ ANIME
+┃ 7 ➤ CONVERT
+┃ 8 ➤ OTHER
+┃ 9 ➤ REACTION
+┃ 10 ➤ MAIN
+╰━━━━━━━━━━━━━━━━━━━⬣
+
+> Reply with number (1-10)`;
+
+        const sentMsg = await conn.sendMessage(from, {
+            image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' },
+            caption: menuCaption,
+            contextInfo
+        }, { quoted: mek });
 
         const messageID = sentMsg.key.id;
 
-        // MENU DATA
+        // MENUS
         const menuData = {
-            '1': `📥 DOWNLOAD MENU\n\nfacebook\ntiktok\ninsta\nplay\nytmp3\nytmp4`,
-            '2': `👥 GROUP MENU\n\nadd\nremove\npromote\ndemote\nmute\nunmute`,
-            '3': `😄 FUN MENU\n\njoke\npickup\ninsult\nrate`,
-            '4': `👑 OWNER MENU\n\nrestart\nshutdown\nblock`,
-            '5': `🤖 AI MENU\n\nai\ngpt\nimagine`,
-            '6': `🎎 ANIME MENU\n\nwaifu\nneko\nloli`,
-            '7': `🔄 CONVERT MENU\n\nsticker\ntomp3\ntts`,
-            '8': `📌 OTHER MENU\n\ntime\ndate\ncalc`,
-            '9': `💞 REACTION MENU\n\nhug\nkiss\nslap`,
-            '10': `🏠 MAIN MENU\n\nmenu\nping\nalive\nruntime`
+            "1": "📥 DOWNLOAD MENU\n\nfacebook\ntiktok\ninsta\nplay\nytmp3\nytmp4",
+            "2": "👥 GROUP MENU\n\nadd\nremove\npromote\ndemote\nmute",
+            "3": "😄 FUN MENU\n\njoke\npickup\ninsult\nrate",
+            "4": "👑 OWNER MENU\n\nblock\nunblock\nrestart",
+            "5": "🤖 AI MENU\n\ngpt\nai\nimagine",
+            "6": "🎎 ANIME MENU\n\nwaifu\nneko\nloli",
+            "7": "🔄 CONVERT MENU\n\nsticker\ntomp3\nfancy",
+            "8": "📌 OTHER MENU\n\nweather\nnews\nmovie",
+            "9": "💞 REACTION MENU\n\nhug\nkiss\nslap",
+            "10": "🏠 MAIN MENU\n\nmenu\nping\nalive"
         };
 
-        // HANDLER
+        // ✅ FIXED HANDLER
         const handler = async (msgData) => {
             try {
                 const msg = msgData.messages[0];
                 if (!msg?.message) return;
 
-                const sender = msg.key.remoteJid;
-
-                // GET TEXT SAFELY
                 const text =
                     msg.message.conversation ||
                     msg.message.extendedTextMessage?.text ||
-                    msg.message.imageMessage?.caption ||
                     "";
 
-                const input = text.trim();
+                const replyId =
+                    msg.message.extendedTextMessage?.contextInfo?.stanzaId;
 
-                // GET REPLY ID
-                const repliedId =
-                    msg.message?.extendedTextMessage?.contextInfo?.stanzaId ||
-                    msg.message?.imageMessage?.contextInfo?.stanzaId;
+                // ✅ ACCEPT BOTH:
+                // 1. Reply to menu
+                // 2. Direct number message
+                const isValid =
+                    replyId === messageID || ["1","2","3","4","5","6","7","8","9","10"].includes(text.trim());
 
-                // CONDITION: reply OR direct number
-                if (repliedId !== messageID && !menuData[input]) return;
+                if (!isValid) return;
 
-                // INVALID
-                if (!menuData[input]) {
-                    await conn.sendMessage(sender, {
-                        text: "❌ Invalid option\nReply with number 1-10"
+                const choice = text.trim();
+
+                if (menuData[choice]) {
+                    await conn.sendMessage(msg.key.remoteJid, {
+                        text: menuData[choice],
+                        contextInfo
                     }, { quoted: msg });
-                    return;
+
+                    await conn.sendMessage(msg.key.remoteJid, {
+                        react: { text: "✅", key: msg.key }
+                    });
+
+                } else {
+                    await conn.sendMessage(msg.key.remoteJid, {
+                        text: "❌ Invalid option (1-10)",
+                        contextInfo
+                    }, { quoted: msg });
                 }
 
-                // SEND RESULT
-                await conn.sendMessage(sender, {
-                    text: menuData[input]
-                }, { quoted: msg });
-
-                // REACT
-                await conn.sendMessage(sender, {
-                    react: { text: "✅", key: msg.key }
-                });
-
-            } catch (e) {
-                console.log("Handler error:", e);
+            } catch (err) {
+                console.log("Handler error:", err);
             }
         };
 
@@ -149,7 +136,7 @@ cmd({
         }, 300000);
 
     } catch (e) {
-        console.error("Menu Error:", e);
-        reply("❌ Menu error, try again.");
+        console.error(e);
+        reply("❌ Menu error");
     }
 });
