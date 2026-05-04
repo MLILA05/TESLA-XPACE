@@ -22,7 +22,7 @@ const CATEGORIES = {
         cmds: ["neonlight","profilecard","blackpink","dragonball","3dcomic","america","naruto","sadgirl","clouds","futuristic","3dpaper","eraser","sunset","leaf","galaxy","sans","boom","hacker","devilwings","nigeria","bulb","angelwings","zodiac","luxury","paint","frozen","castle","tatoo","valorant","bear","typography","birthday"]
     },
     ai: {
-        icon: "🤖", label: "assistance",
+        icon: "🤖", label: "AI",
         cmds: ["ai","gpt","gpt2","gpt3","gptmini","gpt4","meta","blackbox","luma","dj","deepseek","erfan","bing","imagine","imagine2","copilot","bard","felo","gita"]
     },
     convert: {
@@ -51,9 +51,10 @@ const CATEGORIES = {
     }
 };
 
+// ── Helper: build category text vertical ─────────────────────────
 function buildCategoryText(key, prefix) {
     const cat = CATEGORIES[key];
-    const rows = cat.cmds.map((c, i) => 
+    const rows = cat.cmds.map((c, i) =>
         `  ${String(i + 1).padStart(2, '0')}. ${prefix}${c}`
     );
 
@@ -91,7 +92,8 @@ async (conn, mek, m, { from, reply }) => {
         const mode     = config.MODE       || "public";
         const modeIcon = mode === "public" ? "🌐" : mode === "private" ? "🔒" : "👥";
 
-       // Build category list — vertical
+        // Build category list — vertical
+        const catKeys = Object.keys(CATEGORIES);
         const catRows = catKeys.map(key => {
             const cat = CATEGORIES[key];
             return `  ${cat.icon} ${prefix}${key} (${cat.cmds.length} cmds)`;
@@ -99,9 +101,9 @@ async (conn, mek, m, { from, reply }) => {
 
         const overview = `
 ┌──────────────────┐
-│  ⚡ ${botName.padEnd(24)} 
-│  Ultimate WhatsApp Bot     
-└──────────────────┘
+│  ⚡ ${botName.padEnd(22)} 
+│  Ultimate WhatsApp Bot   
+└─────────────────┘
 
 👤 Owner   » ${owner}
 🔑 Prefix  » [ ${prefix} ]
@@ -113,14 +115,9 @@ ${modeIcon} Mode    » ${mode.toUpperCase()}
 
 ━━[ 📂 CATEGORIES ]━━
 ${catRows.join("\n")}
-━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━
 
-💡 *Type the command to open a menu:*
-   ${prefix}download  •  ${prefix}ai
-   ${prefix}group     •  ${prefix}fun
-   ${prefix}anime     •  ${prefix}owner
-
-🚀 _DML Tech — Building Future Automation_`.trim();
+🚀 _Dml Tech — Building Future Automation_`.trim();
 
         await conn.sendMessage(
             from,
@@ -163,9 +160,7 @@ Object.keys(CATEGORIES).forEach(key => {
         try {
             const prefix = config.PREFIX || ".";
             const text = buildCategoryText(key, prefix);
-
             await conn.sendMessage(from, { text }, { quoted: mek });
-
         } catch (e) {
             console.log(e);
             reply(`❌ Error: ${e.message}`);
