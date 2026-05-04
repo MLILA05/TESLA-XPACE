@@ -1,12 +1,3 @@
-/**
- * ╔══════════════════════════════════════╗
- * ║        AUTO DYNAMIC MENU             ║
- * ║  Auto-reads ALL plugin files &       ║
- * ║  builds menu from real commands      ║
- * ║  Supports: Image + Video thumbnail   ║
- * ╚══════════════════════════════════════╝
- */
-
 const fs = require('fs');
 const path = require('path');
 const config = require('../config');
@@ -15,27 +6,20 @@ const { runtime } = require('../lib/functions');
 const os = require('os');
 
 // ══════════════════════════════════════════
-//  CATEGORY DISPLAY CONFIG
-//  Maps raw category names → display label + emoji
+//  CATEGORY MAP
 // ══════════════════════════════════════════
 const CATEGORY_MAP = {
-    // AI
     'ai':           { label: 'AI TOOLS',        emoji: '🤖', section: 'ai' },
     'ai-tools':     { label: 'AI TOOLS',        emoji: '🤖', section: 'ai' },
-    // Download
     'download':     { label: 'DOWNLOAD',        emoji: '📥', section: 'download' },
     'downloader':   { label: 'DOWNLOAD',        emoji: '📥', section: 'download' },
     'audio':        { label: 'DOWNLOAD',        emoji: '📥', section: 'download' },
     'media':        { label: 'DOWNLOAD',        emoji: '📥', section: 'download' },
-    // Group
     'group':        { label: 'GROUP',           emoji: '👥', section: 'group' },
     'admin':        { label: 'GROUP',           emoji: '👥', section: 'group' },
     'security':     { label: 'GROUP',           emoji: '👥', section: 'group' },
-    // Fun
     'fun':          { label: 'FUN',             emoji: '😄', section: 'fun' },
-    // Owner
     'owner':        { label: 'OWNER',           emoji: '👑', section: 'owner' },
-    // Image / Sticker
     'image':        { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
     'image-tools':  { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
     'img_edit':     { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
@@ -43,19 +27,17 @@ const CATEGORY_MAP = {
     'maker':        { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
     'logo':         { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
     'wallpapers':   { label: 'IMAGE/STICKER',   emoji: '🖼️', section: 'image' },
-    // Anime
     'anime':        { label: 'ANIME',           emoji: '🎎', section: 'anime' },
-    // Tools / Convert
     'tools':        { label: 'TOOLS',           emoji: '🛠️', section: 'tools' },
     'convert':      { label: 'TOOLS',           emoji: '🛠️', section: 'tools' },
     'converter':    { label: 'TOOLS',           emoji: '🛠️', section: 'tools' },
     'utilities':    { label: 'TOOLS',           emoji: '🛠️', section: 'tools' },
     'utility':      { label: 'TOOLS',           emoji: '🛠️', section: 'tools' },
-    // Main / Info
+    'reactions':    { label: 'REACTIONS',       emoji: '💞', section: 'reactions' },
+    'reaction':     { label: 'REACTIONS',       emoji: '💞', section: 'reactions' },
     'main':         { label: 'MAIN',            emoji: '🏠', section: 'main' },
     'info':         { label: 'MAIN',            emoji: '🏠', section: 'main' },
     'information':  { label: 'MAIN',            emoji: '🏠', section: 'main' },
-    // Other / Misc
     'other':        { label: 'OTHER',           emoji: '📌', section: 'other' },
     'misc':         { label: 'OTHER',           emoji: '📌', section: 'other' },
     'privacy':      { label: 'OTHER',           emoji: '📌', section: 'other' },
@@ -65,64 +47,51 @@ const CATEGORY_MAP = {
     'search':       { label: 'OTHER',           emoji: '📌', section: 'other' },
     'stalker':      { label: 'OTHER',           emoji: '📌', section: 'other' },
     'env':          { label: 'OTHER',           emoji: '📌', section: 'other' },
-    // Menu / skip
     'menu':         { label: null, section: 'skip' },
     'menu3':        { label: null, section: 'skip' },
 };
 
-// Section order for final display
-const SECTION_ORDER = ['main','download','group','fun','owner','ai','image','anime','tools','other','new'];
+const SECTION_META = {
+    main:      { emoji: '🏠', label: 'MAIN' },
+    download:  { emoji: '📥', label: 'DOWNLOAD' },
+    group:     { emoji: '👥', label: 'GROUP' },
+    fun:       { emoji: '😄', label: 'FUN' },
+    owner:     { emoji: '👑', label: 'OWNER' },
+    ai:        { emoji: '🤖', label: 'AI TOOLS' },
+    image:     { emoji: '🖼️', label: 'IMAGE/STICKER' },
+    anime:     { emoji: '🎎', label: 'ANIME' },
+    tools:     { emoji: '🛠️', label: 'TOOLS' },
+    reactions: { emoji: '💞', label: 'REACTIONS' },
+    other:     { emoji: '📌', label: 'OTHER' },
+    new:       { emoji: '⚡', label: 'UNCATEGORIZED' },
+};
+
+const SECTION_ORDER = [
+    'main', 'download', 'group', 'fun', 'owner',
+    'ai', 'image', 'anime', 'tools', 'reactions', 'other', 'new'
+];
 
 // ══════════════════════════════════════════
-//  CORE: auto-read all plugin files
-//  Returns { sectionName: [pattern, ...] }
+//  CORE: use already-loaded commands object
+//  More reliable than regex file scanning
 // ══════════════════════════════════════════
 function buildCommandMap() {
-    const pluginsDir = path.join(__dirname);
     const sections = {};
 
-    // Helper: ensure section array exists
     const addTo = (section, pattern) => {
         if (!sections[section]) sections[section] = [];
         if (!sections[section].includes(pattern)) sections[section].push(pattern);
     };
 
-    let files;
-    try {
-        files = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'));
-    } catch (e) {
-        return sections;
-    }
+    for (const [pattern, cmdData] of Object.entries(commands)) {
+        const rawCat = (cmdData.category || '').trim().toLowerCase();
+        const mapped = CATEGORY_MAP[rawCat];
 
-    for (const file of files) {
-        const filePath = path.join(pluginsDir, file);
-        let src;
-        try { src = fs.readFileSync(filePath, 'utf-8'); } catch { continue; }
-
-        // Extract all cmd({...}) blocks by finding pattern + category pairs
-        // Strategy: find all pattern: "x" and the nearest category: "y" within ~300 chars
-        const cmdBlockRegex = /cmd\s*\(\s*\{([\s\S]*?)\}\s*,/g;
-        let blockMatch;
-        while ((blockMatch = cmdBlockRegex.exec(src)) !== null) {
-            const block = blockMatch[1];
-
-            // Extract pattern
-            const patMatch = block.match(/pattern\s*:\s*['"`]([^'"`]+)['"`]/);
-            if (!patMatch) continue;
-            const pattern = patMatch[1].trim();
-
-            // Extract category
-            const catMatch = block.match(/category\s*:\s*['"`]([^'"`]+)['"`]/);
-            const rawCat = catMatch ? catMatch[1].trim().toLowerCase() : '';
-
-            const mapped = CATEGORY_MAP[rawCat];
-            if (mapped) {
-                if (mapped.section === 'skip') continue; // skip menu/meta commands
-                addTo(mapped.section, pattern);
-            } else {
-                // Unknown category → goes to 'new' (all-commands catch-all)
-                addTo('new', pattern);
-            }
+        if (mapped) {
+            if (mapped.section === 'skip') continue;
+            addTo(mapped.section, pattern);
+        } else {
+            addTo('new', pattern);
         }
     }
 
@@ -130,161 +99,91 @@ function buildCommandMap() {
 }
 
 // ══════════════════════════════════════════
-//  BUILD: a single section block string
+//  BUILD: overview menu text
 // ══════════════════════════════════════════
-function buildSectionBlock(sectionKey, cmds) {
-    const sectionMeta = {
-        main:     { emoji: '🏠', label: 'ᴍᴀɪɴ ᴍᴇɴᴜ' },
-        download: { emoji: '📥', label: 'ᴅᴏᴡɴʟᴏᴀᴅ' },
-        group:    { emoji: '👥', label: 'ɢʀᴏᴜᴘ' },
-        fun:      { emoji: '😄', label: 'ғᴜɴ' },
-        owner:    { emoji: '👑', label: 'ᴏᴡɴᴇʀ' },
-        ai:       { emoji: '🤖', label: 'ᴀɪ ᴛᴏᴏʟs' },
-        image:    { emoji: '🖼️', label: 'ɪᴍᴀɢᴇ/sᴛɪᴄᴋᴇʀ' },
-        anime:    { emoji: '🎎', label: 'ᴀɴɪᴍᴇ' },
-        tools:    { emoji: '🛠️', label: 'ᴛᴏᴏʟs' },
-        other:    { emoji: '📌', label: 'ᴏᴛʜᴇʀ' },
-        new:      { emoji: '⚡', label: 'ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs' },
-    };
-    const meta = sectionMeta[sectionKey] || { emoji: '🔹', label: sectionKey.toUpperCase() };
-    const lines = cmds.map(c => `┃ ─ ${c}`).join('\n');
-    return `╭━━〔 ${meta.emoji} ${meta.label} 〕━━╮\n${lines}\n╰━━━━━━━━━━━━━━━━━━━╯`;
-}
-
-// ══════════════════════════════════════════
-//  BUILD: full overview menu text
-// ══════════════════════════════════════════
-function buildFullMenu(sections, botName, ownerName, prefix, mode, uptime, ramUsed, totalRam, platform, currentDate, currentTime) {
+function buildOverview(sections, info) {
+    const { botName, ownerName, prefix, mode, uptime, ramUsed, totalRam, ramPct, ramBar, platform, currentDate, currentTime } = info;
     const totalCommands = Object.values(sections).reduce((a, b) => a + b.length, 0);
-    const sectionCount = Object.keys(sections).filter(k => sections[k].length > 0).length;
+    const modeIcon = mode === 'public' ? '🌐' : mode === 'private' ? '🔒' : '👥';
 
-    let header = `╭━━━〔 🤖 ${botName} 〕━━━╮
-┃ ✨ ᴜʟᴛɪᴍᴀᴛᴇ ᴡʜᴀᴛsᴀᴘᴘ ʙᴏᴛ
-╰━━━━━━━━━━━━━━━━━━━╯
+    const orderedKeys = SECTION_ORDER.filter(k => sections[k]?.length > 0);
 
-╭━━━〔 👑 BOT INFO 〕━━━╮
-┃ 👑 Owner   : ${ownerName}
-┃ 📛 Bot     : ${botName}
-┃ 🔣 Prefix  : [ ${prefix} ]
-┃ 📳 Mode    : ${mode}
-┃ ⏱️ Uptime  : ${uptime}
-┃ 📚 Cmds    : ${totalCommands}
-╰━━━━━━━━━━━━━━━━━━━╯
+    const categoryLines = orderedKeys.map(k => {
+        const meta = SECTION_META[k];
+        return `  ${meta.emoji} .${k} (${sections[k].length} cmds)`;
+    }).join('\n');
 
-╭━━━〔 💻 SYSTEM 〕━━━╮
-┃ 🧠 RAM      : ${ramUsed}MB / ${totalRam}GB
-┃ 🖥️ Platform : ${platform}
-┃ 📅 Date     : ${currentDate}
-┃ 🕐 Time     : ${currentTime}
-╰━━━━━━━━━━━━━━━━━━━╯
+    return `
+┌──────────────────────────┐
+│  ⚡ ${botName.padEnd(22)} │
+│  Ultimate WhatsApp Bot   │
+└──────────────────────────┘
 
-╭━━━〔 🌟 STATUS 〕━━━╮
-┃ ⚡ ʀᴜɴɴɪɴɢ ɪɴ ɴᴇᴏɴ sᴛʏʟᴇ
-╰━━━━━━━━━━━━━━━━━━━╯
+👤 Owner   » ${ownerName}
+🔑 Prefix  » [ ${prefix} ]
+${modeIcon} Mode    » ${mode.toUpperCase()}
+⏱️  Uptime  » ${uptime}
+📦 Cmds    » ${totalCommands} loaded
+💻 RAM     [${ramBar}] ${ramPct}%
+           ${ramUsed}MB / ${totalRam}GB
 
-╭━━〔 ᴍᴇɴᴜ sᴇᴄᴛɪᴏɴs 〕━━╮`;
+━━━[ 📂 CATEGORIES ]━━━
+${categoryLines}
+━━━━━━━━━━━━━━━━━━━━━━━
 
-    // Build numbered section index
-    const orderedSections = SECTION_ORDER.filter(k => sections[k] && sections[k].length > 0);
-    const sectionEmojis = {
-        main:'🏠',download:'📥',group:'👥',fun:'😄',owner:'👑',
-        ai:'🤖',image:'🖼️',anime:'🎎',tools:'🛠️',other:'📌',new:'⚡'
-    };
-    const sectionLabels = {
-        main:'ᴍᴀɪɴ',download:'ᴅᴏᴡɴʟᴏᴀᴅ',group:'ɢʀᴏᴜᴘ',fun:'ғᴜɴ',
-        owner:'ᴏᴡɴᴇʀ',ai:'ᴀɪ',image:'ɪᴍᴀɢᴇ/sᴛɪᴄᴋᴇʀ',anime:'ᴀɴɪᴍᴇ',
-        tools:'ᴛᴏᴏʟs',other:'ᴏᴛʜᴇʀ',new:'ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs'
-    };
-    const numEmojis = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','🔢','🔢'];
-    orderedSections.forEach((k, i) => {
-        const count = sections[k].length;
-        header += `\n┃ ${numEmojis[i] || '🔹'}  ${sectionEmojis[k]} ${sectionLabels[k]} [${count}]`;
-    });
-    header += `\n╰━━━━━━━━━━━━━━━━━━━╯
-
-> ʀᴇᴘʟʏ ᴡɪᴛʜ ɴᴜᴍʙᴇʀ ғᴏʀ ᴅᴇᴛᴀɪʟs
-
-`;
-
-    // Append each section block
-    orderedSections.forEach(k => {
-        header += buildSectionBlock(k, sections[k]) + '\n\n';
-    });
-
-    header += `> ${config.DESCRIPTION || '🌟 ᴘᴏᴡᴇʀᴇᴅ ʙʏ ' + botName}`;
-    return header;
+💡 _Type the category command to see its commands_
+🚀 _DML Tech — Building Future Automation_`.trim();
 }
 
 // ══════════════════════════════════════════
-//  BUILD: sub-menu text for a section
+//  BUILD: sub-menu text for one section
 // ══════════════════════════════════════════
-function buildSubMenu(sectionKey, cmds, botName, ownerName, uptime) {
-    const sectionEmojis = {
-        main:'🏠',download:'📥',group:'👥',fun:'😄',owner:'👑',
-        ai:'🤖',image:'🖼️',anime:'🎎',tools:'🛠️',other:'📌',new:'⚡'
-    };
-    const sectionLabels = {
-        main:'ᴍᴀɪɴ ᴍᴇɴᴜ',download:'ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ',group:'ɢʀᴏᴜᴘ ᴍᴇɴᴜ',
-        fun:'ғᴜɴ ᴍᴇɴᴜ',owner:'ᴏᴡɴᴇʀ ᴍᴇɴᴜ',ai:'ᴀɪ ᴍᴇɴᴜ',
-        image:'ɪᴍᴀɢᴇ/sᴛɪᴄᴋᴇʀ ᴍᴇɴᴜ',anime:'ᴀɴɪᴍᴇ ᴍᴇɴᴜ',
-        tools:'ᴛᴏᴏʟs ᴍᴇɴᴜ',other:'ᴏᴛʜᴇʀ ᴍᴇɴᴜ',new:'ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs'
-    };
-    const emoji = sectionEmojis[sectionKey] || '🔹';
-    const label = sectionLabels[sectionKey] || sectionKey;
+function buildSubMenu(sectionKey, cmds, prefix) {
+    const meta = SECTION_META[sectionKey] || { emoji: '🔹', label: sectionKey.toUpperCase() };
+    const numbered = cmds.map((c, i) =>
+        `  ${String(i + 1).padStart(2, '0')}. ${prefix}${c}`
+    ).join('\n');
 
-    const lines = cmds.map(c => `┃ ─ ${c}`).join('\n');
-    return `╭━━━〔 🤖 ${botName} 〕━━━╮
-┃ ✨ ${emoji} ${label}
-╰━━━━━━━━━━━━━━━━╯
-
-╭━━〔 📊 BOT STATUS 〕━━╮
-┃ 👑 Owner   : ${ownerName}
-┃ 📜 Commands: ${cmds.length}
-┃ ⏱️ Uptime  : ${uptime}
-╰━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 ${emoji} COMMAND LIST 〕━━━╮
-${lines}
-╰━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━━〔 🌟 INFO 〕━━━╮
-┃ ${config.DESCRIPTION || '✨ Welcome to ' + botName}
-╰━━━━━━━━━━━━━━━━╯`;
+    return `
+${meta.emoji} *${meta.label} MENU*
+${'─'.repeat(30)}
+${numbered}
+${'─'.repeat(30)}
+📦 Total: *${cmds.length}* commands
+🚀 _DML Tech — Building Future Automation_`.trim();
 }
 
 // ══════════════════════════════════════════
-//   MAIN COMMAND: .automenu
+//  MAIN COMMAND: .menu3
 // ══════════════════════════════════════════
 cmd({
-    pattern: "menu3",
-    alias: ["amenu", "fullmenu"],
-    desc: "Show dynamic auto-generated menu from all plugins",
-    category: "menu3",
-    react: "👑",
+    pattern: 'menu3',
+    alias: ['amenu'],
+    desc: 'Show dynamic auto-generated menu',
+    category: 'menu3',
+    react: '👑',
     filename: __filename
 }, async (conn, mek, m, { from, reply }) => {
     try {
-        // ── System stats ──
-        const uptime       = runtime(process.uptime());
-        const ramUsed      = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
-        const totalRam     = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
-        const platform     = os.platform();
-        const currentTime  = new Date().toLocaleTimeString();
-        const currentDate  = new Date().toLocaleDateString();
-        const botName      = config.BOT_NAME   || '𝐀𝐃𝚵𝚵𝐋-𝐌𝐃';
-        const ownerName    = config.OWNER_NAME || 'DEVELOPER';
-        const prefix       = config.PREFIX     || '.';
-        const mode         = config.MODE       || 'public';
+        const ramUsed  = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(1);
+        const totalRam = (os.totalmem() / 1024 / 1024 / 1024).toFixed(1);
+        const ramPct   = ((process.memoryUsage().heapUsed / os.totalmem()) * 100).toFixed(0);
+        const ramBar   = '█'.repeat(Math.round(ramPct / 10)) + '░'.repeat(10 - Math.round(ramPct / 10));
 
-        // ── Build command sections from live plugin folder ──
+        const info = {
+            botName:     config.BOT_NAME   || 'TESLA-XPACE',
+            ownerName:   config.OWNER_NAME || 'DEVELOPER',
+            prefix:      config.PREFIX     || '.',
+            mode:        config.MODE       || 'public',
+            uptime:      runtime(process.uptime()),
+            ramUsed, totalRam, ramPct, ramBar,
+            platform:    os.platform(),
+            currentDate: new Date().toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }),
+            currentTime: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+        };
+
         const sections = buildCommandMap();
-        const orderedSections = SECTION_ORDER.filter(k => sections[k] && sections[k].length > 0);
-
-        // ── Build full menu text ──
-        const menuText = buildFullMenu(
-            sections, botName, ownerName, prefix, mode,
-            uptime, ramUsed, totalRam, platform, currentDate, currentTime
-        );
+        const menuText = buildOverview(sections, info);
 
         const contextInfo = {
             mentionedJid: [m.sender],
@@ -292,153 +191,63 @@ cmd({
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
                 newsletterJid: '120363403958418756@newsletter',
-                newsletterName: botName,
+                newsletterName: info.botName,
                 serverMessageId: 143
             }
         };
 
-        // ── Determine media type from config ──
-        // Set MENU_VIDEO_URL in config for video, MENU_IMAGE_URL for image
-        const videoUrl = config.MENU_VIDEO_URL || null;
         const imageUrl = config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg';
 
-        let sentMsg;
         try {
-            if (videoUrl) {
-                // Video thumbnail support
-                sentMsg = await conn.sendMessage(from, {
-                    video: { url: videoUrl },
-                    caption: menuText,
-                    gifPlayback: false,
-                    contextInfo: contextInfo
-                }, { quoted: mek });
-            } else {
-                sentMsg = await conn.sendMessage(from, {
-                    image: { url: imageUrl },
-                    caption: menuText,
-                    contextInfo: contextInfo
-                }, { quoted: mek });
-            }
-        } catch (e) {
-            // Fallback to plain text
-            sentMsg = await conn.sendMessage(from, {
+            await conn.sendMessage(from, {
+                image: { url: imageUrl },
+                caption: menuText,
+                contextInfo
+            }, { quoted: mek });
+        } catch {
+            await conn.sendMessage(from, {
                 text: menuText,
-                contextInfo: contextInfo
+                contextInfo
             }, { quoted: mek });
         }
 
-        const messageID = sentMsg.key.id;
+    } catch (e) {
+        console.error('[menu3] Error:', e);
+        reply(`❌ Error: ${e.message}`);
+    }
+});
 
-        // ── Reply handler: user replies with section number ──
-        const handler = async (msgData) => {
-            try {
-                const receivedMsg = msgData.messages[0];
-                if (!receivedMsg?.message || !receivedMsg.key?.remoteJid) return;
+// ══════════════════════════════════════════
+//  AUTO-REGISTER: one command per section
+//  User types .download, .ai, .group etc
+// ══════════════════════════════════════════
+Object.keys(SECTION_META).forEach(sectionKey => {
+    const meta = SECTION_META[sectionKey];
 
-                const isReplyToMenu = receivedMsg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
-                if (!isReplyToMenu) return;
+    cmd({
+        pattern: sectionKey,
+        use: `.${sectionKey}`,
+        desc: `Show ${meta.label} commands`,
+        category: 'menu3',
+        react: meta.emoji,
+        filename: __filename
+    }, async (conn, mek, m, { from, reply }) => {
+        try {
+            const prefix   = config.PREFIX || '.';
+            const sections = buildCommandMap();
+            const cmds     = sections[sectionKey];
 
-                const receivedText = (
-                    receivedMsg.message.conversation ||
-                    receivedMsg.message.extendedTextMessage?.text || ''
-                ).trim();
-
-                const senderID = receivedMsg.key.remoteJid;
-
-                // Map number → section key
-                const numToSection = {};
-                orderedSections.forEach((k, i) => { numToSection[String(i + 1)] = k; });
-
-                const sectionKey = numToSection[receivedText];
-
-                if (sectionKey && sections[sectionKey]) {
-                    const subText = buildSubMenu(
-                        sectionKey, sections[sectionKey], botName, ownerName, runtime(process.uptime())
-                    );
-
-                    try {
-                        if (videoUrl) {
-                            await conn.sendMessage(senderID, {
-                                video: { url: videoUrl },
-                                caption: subText,
-                                gifPlayback: false,
-                                contextInfo: contextInfo
-                            }, { quoted: receivedMsg });
-                        } else {
-                            await conn.sendMessage(senderID, {
-                                image: { url: imageUrl },
-                                caption: subText,
-                                contextInfo: contextInfo
-                            }, { quoted: receivedMsg });
-                        }
-                    } catch {
-                        await conn.sendMessage(senderID, {
-                            text: subText,
-                            contextInfo: contextInfo
-                        }, { quoted: receivedMsg });
-                    }
-
-                    await conn.sendMessage(senderID, {
-                        react: { text: '✅', key: receivedMsg.key }
-                    });
-                } else {
-                    await conn.sendMessage(senderID, {
-                        text: `❌ ɪɴᴠᴀʟɪᴅ ᴏᴘᴛɪᴏɴ!\n\nᴘʟᴇᴀsᴇ ʀᴇᴘʟʏ ᴡɪᴛʜ ᴀ ɴᴜᴍʙᴇʀ ʙᴇᴛᴡᴇᴇɴ 1 - ${orderedSections.length}\n\n> ${config.DESCRIPTION || botName}`,
-                        contextInfo: contextInfo
-                    }, { quoted: receivedMsg });
-                }
-            } catch (e) {
-                console.log('[automenu] handler error:', e.message);
+            if (!cmds || cmds.length === 0) {
+                return reply(`❌ No commands found in *${meta.label}* category.`);
             }
-        };
 
-        conn.ev.on('messages.upsert', handler);
-        // Auto-cleanup after 5 minutes
-        setTimeout(() => conn.ev.off('messages.upsert', handler), 300000);
+            const text = buildSubMenu(sectionKey, cmds, prefix);
 
-    } catch (e) {
-        console.error('[automenu] Error:', e);
-        reply('❌ ᴀᴜᴛᴏ ᴍᴇɴᴜ ᴇʀʀᴏʀ. ᴘʟᴇᴀsᴇ ᴛʀʏ ᴀɢᴀɪɴ.');
-    }
+            await conn.sendMessage(from, { text }, { quoted: mek });
+
+        } catch (e) {
+            console.log(e);
+            reply(`❌ Error: ${e.message}`);
+        }
+    });
 });
-
-// ══════════════════════════════════════════
-//   BONUS COMMAND: .setmenuvideo <url>
-//   Lets owner set video URL at runtime
-// ══════════════════════════════════════════
-// ══════════════════════════════════════════
-//   BONUS COMMAND: .setmenuvideo <url>
-//   Lets owner set video URL at runtime
-// ══════════════════════════════════════════
-cmd({
-    pattern: "setmenuvideo",
-    alias: ["vidmenu"],
-    use: '.setmenuvideo <video_url>',
-    desc: "Set menu thumbnail to a video URL (owner only)",
-    category: "owner",
-    react: "🎥",
-    filename: __filename
-}, async (conn, mek, m, { from, args, isOwner, reply }) => {
-    try {
-        if (!isOwner) return reply("❌ Owner only command!");
-        const url = args[0];
-        if (!url) return reply("❌ Usage: .setmenuvideo <direct_video_url>");
-        config.MENU_VIDEO_URL = url;
-        reply(`✅ *Menu video set!*\n\n🎥 URL: ${url}\n\n> Use .automenu to see it in action!`);
-        // share local audio 
-        const audioPath = path.join(__dirname, '../assets/menu.m4a');
-        await conn.sendMessage(from, {
-            audio: fs.readFileSync(audioPath),
-            mimetype: 'audio/mp4',
-            ptt: false,
-        }, { quoted: mek });
-    } catch (e) {
-        console.log(e);
-        reply(`❌ Error: ${e}`);
-    }
-});
-
-// ══════════════════════════════════════════
-//   BONUS COMMAND: .setmenuimage <url>
-//   Lets owner set image URL at runtime
-// ══════════════════════════════════════════
