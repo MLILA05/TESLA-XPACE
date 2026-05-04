@@ -5,9 +5,9 @@ cmd({
     pattern: "pair",
     alias: ["getpair", "clonebot"],
     react: "✅",
-    desc: "Get pairing code for TESLA-XPACE bot",
+    desc: "Get pairing code for TESLA-XPACE",
     category: "download",
-    use: ".pair 923174838XXX",
+    use: ".pair 25578559XXX",
     filename: __filename
 }, async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, senderNumber, reply }) => {
     try {
@@ -20,7 +20,7 @@ cmd({
         }
 
         // Make API request to get pairing code
-        const response = await axios.get(`https://adeelultrapair-12542c80ba62.herokuapp.com/pair/code?number=${encodeURIComponent(phoneNumber)}`);
+        const response = await axios.get(`https://tesla-pair-40ecbe6e8fe5.herokuapp.com/pair/code?number=${encodeURIComponent(phoneNumber)}`);
 
         if (!response.data || !response.data.code) {
             return await reply("❌ Failed to retrieve pairing code. Please try again later.");
