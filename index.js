@@ -186,7 +186,7 @@ const {
               console.log('[🔰] TESLA-XPACE connected to WhatsApp ✅');
               
               // Load plugins
-              const pluginPath = path.join(__dirname, 'plugins');
+              const pluginPath = path.join(__dirname, 'Dml');
               let pluginCount = 0;
               fs.readdirSync(pluginPath).forEach((plugin) => {
                   if (path.extname(plugin).toLowerCase() === ".js") {
