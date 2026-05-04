@@ -70,7 +70,7 @@ const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━�
         let sentMsg;
         try {
             sentMsg = await conn.sendMessage(from, {
-                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' },
+                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/ydvgry.png' },
                 caption: menuCaption,
                 contextInfo: contextInfo
             }, { quoted: mek });
