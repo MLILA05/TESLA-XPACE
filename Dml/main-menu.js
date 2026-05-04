@@ -51,24 +51,17 @@ const CATEGORIES = {
     }
 };
 
-// ── Helper: build category text ───────────────────────────────────
 function buildCategoryText(key, prefix) {
     const cat = CATEGORIES[key];
-    const cols = 3;
-    const rows = [];
-    for (let i = 0; i < cat.cmds.length; i += cols) {
-        rows.push(
-            cat.cmds.slice(i, i + cols)
-                .map(c => `${prefix}${c}`.padEnd(15))
-                .join("")
-        );
-    }
+    const rows = cat.cmds.map((c, i) => 
+        `  ${String(i + 1).padStart(2, '0')}. ${prefix}${c}`
+    );
 
     return `
 ${cat.icon} *${cat.label.toUpperCase()} MENU*
-${"─".repeat(45)}
+${"─".repeat(30)}
 ${rows.join("\n")}
-${"─".repeat(45)}
+${"─".repeat(30)}
 📦 Total: *${cat.cmds.length}* commands
 🚀 _Dml Tech — Building Future Automation_`.trim();
 }
@@ -92,17 +85,16 @@ async (conn, mek, m, { from, reply }) => {
         const ramPct = ((process.memoryUsage().heapUsed / os.totalmem()) * 100).toFixed(0);
         const ramBar = "█".repeat(Math.round(ramPct / 10)) + "░".repeat(10 - Math.round(ramPct / 10));
 
-        const botName  = config.BOT_NAME   || "ADEEL-MD";
+        const botName  = config.BOT_NAME   || "TESLA-XPACE";
         const owner    = config.OWNER_NAME || "DEVELOPER";
         const prefix   = config.PREFIX     || ".";
         const mode     = config.MODE       || "public";
         const modeIcon = mode === "public" ? "🌐" : mode === "private" ? "🔒" : "👥";
 
        // Build category list — vertical
-        const catKeys = Object.keys(CATEGORIES);
         const catRows = catKeys.map(key => {
             const cat = CATEGORIES[key];
-            return `  ${cat.icon} ${`${prefix}${key}`.padEnd(12)} » ${cat.label} (${cat.cmds.length} cmds)`;
+            return `  ${cat.icon} ${prefix}${key} (${cat.cmds.length} cmds)`;
         });
 
         const overview = `
