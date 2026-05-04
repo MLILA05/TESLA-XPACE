@@ -31,25 +31,23 @@ cmd({
 
         // 🎨 ADEEL-MD STYLE BOX
         const caption = `
-┏━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ 🎧 TESLA-XPACE
-┗━━━━━━━━━━━━━━━━━━━━━━━┛
+🎧  TESLA-XPACE MUSIC
 
-┏━━━〔 🎵 TRACK INFO 〕━━━┓
-┃ 🎶 Title   : ${vid.title}
-┃ 📀 Quality : 128kbps
-┃ 📁 Format  : mp3
-┃ ⚙️ Status  : Downloading...
-┗━━━━━━━━━━━━━━━━━━━━━━━┛
+━━━━━━━━━━━━━━
+🎶 Track
+${vid.title}
 
-┏━━━〔 🚀 PROCESS 〕━━━┓
-┃ ⏳ Please wait...
-┃ 📥 File is being prepared
-┗━━━━━━━━━━━━━━━━━━━━━━━┛
+📀 Format   → MP3
+🎚️ Quality  → 128kbps
+⚙️ Status   → Processing
+━━━━━━━━━━━━━━
 
-┏━━━〔 🌟 CREDIT 〕━━━┓
-┃ 📌 POWERED BY  TESLA-XPACE
-┗━━━━━━━━━━━━━━━━━━━━━━━┛
+🚀 Progress
+• Downloading audio...
+• Preparing file...
+
+━━━━━━━━━━━━━━━━━━
+🌟 Powered by TESLA-XPACE
 `
 
         await conn.sendMessage(from, {
