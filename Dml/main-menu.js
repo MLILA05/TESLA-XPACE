@@ -51,53 +51,40 @@ const CATEGORIES = {
     }
 };
 
-// ── Main menu command ─────────────────────────────────────────────
+// ── Helper: build category text ───────────────────────────────────
+function buildCategoryText(key, prefix) {
+    const cat = CATEGORIES[key];
+    const cols = 3;
+    const rows = [];
+    for (let i = 0; i < cat.cmds.length; i += cols) {
+        rows.push(
+            cat.cmds.slice(i, i + cols)
+                .map(c => `${prefix}${c}`.padEnd(15))
+                .join("")
+        );
+    }
+
+    return `
+${cat.icon} *${cat.label.toUpperCase()} MENU*
+${"─".repeat(45)}
+${rows.join("\n")}
+${"─".repeat(45)}
+📦 Total: *${cat.cmds.length}* commands
+🚀 _DML Tech — Building Future Automation_`.trim();
+}
+
+// ── Main overview menu ────────────────────────────────────────────
 cmd({
     pattern: "menu2",
     alias: ["allmenu", "fullmenu"],
-    use: '.menu2 [category]',
-    desc: "Show bot commands. Use .menu2 ai, .menu2 group, etc.",
+    use: '.menu2',
+    desc: "Show all bot categories",
     category: "menu",
     react: "🔥",
     filename: __filename
 },
-async (conn, mek, m, { from, args, reply }) => {
+async (conn, mek, m, { from, reply }) => {
     try {
-        const input = args[0]?.toLowerCase();
-
-        // ── If a category argument is given, show that category ──
-        if (input && CATEGORIES[input]) {
-            const cat = CATEGORIES[input];
-            const cols = 3;
-            const rows = [];
-            for (let i = 0; i < cat.cmds.length; i += cols) {
-                rows.push(
-                    cat.cmds.slice(i, i + cols)
-                        .map(c => `${config.PREFIX || "."}${c}`.padEnd(14))
-                        .join("")
-                );
-            }
-
-            const text = `
-${cat.icon} *${cat.label.toUpperCase()} COMMANDS*
-${"─".repeat(42)}
-${rows.join("\n")}
-${"─".repeat(42)}
-📦 Total: ${cat.cmds.length} commands
-💡 Usage: ${config.PREFIX || "."}${cat.cmds[0]} [args]
-${"─".repeat(42)}
-🚀 _DML Tech — Building Future Automation_`.trim();
-
-            return await conn.sendMessage(from, { text }, { quoted: mek });
-        }
-
-        // ── If unknown argument, hint the user ──
-        if (input) {
-            const available = Object.keys(CATEGORIES).join(", ");
-            return reply(`❌ Unknown category: *${input}*\n\n📂 Available: ${available}`);
-        }
-
-        // ── Default: show overview ────────────────────────────────
         const totalCommands = Object.keys(commands).length;
         const uptime = runtime(process.uptime());
         const ramUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(1);
@@ -105,21 +92,23 @@ ${"─".repeat(42)}
         const ramPct = ((process.memoryUsage().heapUsed / os.totalmem()) * 100).toFixed(0);
         const ramBar = "█".repeat(Math.round(ramPct / 10)) + "░".repeat(10 - Math.round(ramPct / 10));
 
-        const botName  = config.BOT_NAME   || "Tesla";
+        const botName  = config.BOT_NAME   || "ADEEL-MD";
         const owner    = config.OWNER_NAME || "DEVELOPER";
         const prefix   = config.PREFIX     || ".";
         const mode     = config.MODE       || "public";
         const modeIcon = mode === "public" ? "🌐" : mode === "private" ? "🔒" : "👥";
 
-        // Category index rows — 2 per line
+        // Build category list — 2 columns
         const catKeys = Object.keys(CATEGORIES);
         const catRows = [];
         for (let i = 0; i < catKeys.length; i += 2) {
             const a = CATEGORIES[catKeys[i]];
             const b = CATEGORIES[catKeys[i + 1]];
-            const left  = `${a.icon} ${a.label} (${a.cmds.length})`.padEnd(22);
-            const right = b ? `${b.icon} ${b.label} (${b.cmds.length})` : "";
-            catRows.push(`  ${left}${right}`);
+            const leftCmd  = `${prefix}${catKeys[i]}`.padEnd(14);
+            const rightCmd = b ? `${prefix}${catKeys[i + 1]}` : "";
+            const leftLabel  = `${a.icon} ${leftCmd}`.padEnd(22);
+            const rightLabel = b ? `${b.icon} ${rightCmd}` : "";
+            catRows.push(`  ${leftLabel}${rightLabel}`);
         }
 
         const overview = `
@@ -133,23 +122,19 @@ ${"─".repeat(42)}
 ${modeIcon} Mode    » ${mode.toUpperCase()}
 ⏱️  Uptime  » ${uptime}
 📦 Cmds    » ${totalCommands} loaded
+💻 RAM     [${ramBar}] ${ramPct}%
+           ${ramUsed}MB / ${totalRam}GB
 
-💻 RAM  [${ramBar}] ${ramPct}%
-        ${ramUsed}MB / ${totalRam}GB
-
-━━━━━[ 📂 CATEGORIES ]━━━━━
-
+━━━━━[ 📂 CATEGORIES ]━━━━━━
 ${catRows.join("\n")}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💡 *Type a category to explore:*
-   ${prefix}menu2 download
-   ${prefix}menu2 ai
-   ${prefix}menu2 group
-   ${prefix}menu2 owner
-   ... and more above
+💡 *Type the command to open a menu:*
+   ${prefix}download  •  ${prefix}ai
+   ${prefix}group     •  ${prefix}fun
+   ${prefix}anime     •  ${prefix}owner
 
-🚀 _Dml Tech — Building Future Automation_`.trim();
+🚀 _DML Tech — Building Future Automation_`.trim();
 
         await conn.sendMessage(
             from,
@@ -174,4 +159,30 @@ ${catRows.join("\n")}
         console.log(e);
         reply(`❌ Error: ${e.message}`);
     }
+});
+
+// ── Auto-register one command per category ────────────────────────
+Object.keys(CATEGORIES).forEach(key => {
+    const cat = CATEGORIES[key];
+
+    cmd({
+        pattern: key,
+        use: `.${key}`,
+        desc: `Show ${cat.label} commands`,
+        category: "menu",
+        react: cat.icon,
+        filename: __filename
+    },
+    async (conn, mek, m, { from, reply }) => {
+        try {
+            const prefix = config.PREFIX || ".";
+            const text = buildCategoryText(key, prefix);
+
+            await conn.sendMessage(from, { text }, { quoted: mek });
+
+        } catch (e) {
+            console.log(e);
+            reply(`❌ Error: ${e.message}`);
+        }
+    });
 });
