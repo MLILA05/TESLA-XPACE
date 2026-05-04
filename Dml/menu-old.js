@@ -41,16 +41,16 @@ const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━�
 ┃ Prefix: ${prefix}
 ┃ 🌐 FreeBot: minbot.dml-tech.online
 📦 MENU
-┃ ① Download
-┃ ② Group
-┃ ③ Fun
-┃ ④ Owner
-┃ ⑤ AI
-┃ ⑥ Anime
-┃ ⑦ Convert
-┃ ⑧ Other
-┃ ⑨ Reaction
-┃ ⑩ Main
+┃ 1 Download
+┃ 2 Group
+┃ 3 Fun
+┃ 4 Owner
+┃ 5 AI
+┃ 6 Anime
+┃ 7 Convert
+┃ 8 Other
+┃ 9 Reaction
+┃ 10 Main
 
 📌 Reply 1-10 to open
 
