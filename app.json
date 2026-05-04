@@ -1,6 +1,6 @@
 {
   "name": "TESLA-XPACE-MD",
-  "description": "Javascript WhatsApp bot made by ɪᴍᴀᴅ ᴀʟɪ",
+  "description": "Javascript WhatsApp bot made by tesla",
   "logo": "https://files.catbox.moe/xksplb.jpg",
   "keywords": ["TESLA-XPACE"],
   "success_url": "/",
@@ -65,7 +65,7 @@
 
     "AUTO_STATUS_REPLY": {
       "description": "Make it true for auto reply msg on status seen.",
-      "required": true,
+      "required": false,
       "value": "false"
     }, 
 
