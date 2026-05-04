@@ -39,7 +39,7 @@ const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━�
 ┃ Number: ${senderNumber}
 ┃ Bot: ${botName}
 ┃ Prefix: ${prefix}
-
+┃ 🌐 FreeBot: minbot.dml-tech.online
 📦 MENU
 ┃ ① Download
 ┃ ② Group
