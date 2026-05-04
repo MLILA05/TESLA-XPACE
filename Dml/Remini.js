@@ -1,9 +1,15 @@
-
-
 const axios = require('axios');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { cmd } = require('../command');
 const FormData = require('form-data');
+
+const footer = `\n\n> Free Mini Bot: minbot.dml-tech.online\n> Powered by Dml`;
+
+const styleMsg = (title, text) => {
+    return `╭━━〔 ${title} 〕━━╮
+┃ ${text.replace(/\n/g, '\n┃ ')}
+╰━━━━━━━━━━━━╯${footer}`;
+};
 
 cmd({
     pattern: "remini",
@@ -18,10 +24,20 @@ async (conn, mek, m, { from, quoted, reply }) => {
     try {
         // Must reply to image
         if (!quoted || !quoted.imageMessage) {
-            return reply("🖼️ Please reply to an image with `.hdimg`");
+            return reply(
+                styleMsg(
+                    "🖼️ IMAGE REQUIRED",
+                    "Reply to an image first.\n\nExample: .remini"
+                )
+            );
         }
 
-        await reply("⏳ Processing image, please wait...");
+        await reply(
+            styleMsg(
+                "🪄 ENHANCING IMAGE",
+                "Please wait...\nYour image is being upgraded."
+            )
+        );
 
         // Download image from WhatsApp
         const stream = await downloadContentFromMessage(
@@ -61,7 +77,12 @@ async (conn, mek, m, { from, quoted, reply }) => {
 
         // Validate API response
         if (!apiData.success || !apiData.data?.result) {
-            return reply("❌ Enhancement failed. API returned no image.");
+            return reply(
+                styleMsg(
+                    "❌ ENHANCE FAILED",
+                    "No enhanced image was returned.\nPlease try again later."
+                )
+            );
         }
 
         // Send enhanced image
@@ -69,13 +90,24 @@ async (conn, mek, m, { from, quoted, reply }) => {
             from,
             {
                 image: { url: apiData.data.result },
-                caption: "> ✨ Image Enhanced Successfully by TESLA-XPACE"
+                caption: `╭━━〔 ✨ IMAGE ENHANCED 〕━━╮
+┃ Quality upgraded successfully.
+┃ Status: Completed ✅
+╰━━━━━━━━━━━━╯
+
+> Free Mini Bot: minbot.dml-tech.online
+> Powered by TESLA-XPACE`
             },
             { quoted: m }
         );
 
     } catch (err) {
         console.error("HDIMG ERROR:", err);
-        reply("❌ Image enhancement failed. Please try again.");
+        reply(
+            styleMsg(
+                "❌ PROCESS ERROR",
+                "Image enhancement failed.\nPlease try again."
+            )
+        );
     }
 });
