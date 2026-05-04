@@ -45,7 +45,7 @@ cmd({
 
         if (result) {
             await conn.sendMessage(from, {
-                text: `🤖 *IMMU AI*\n\n${result}\n\n*TESLA-XPACE*`,
+                text: `🤖 *TESLA-XPACE*\n\n${result}\n\n*TESLA-XPACE*`,
                 contextInfo: {
                     mentionedJid: [m.sender],
                     forwardingScore: 999,
