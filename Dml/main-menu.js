@@ -171,7 +171,7 @@ cmd({
         const ramBar   = '█'.repeat(Math.round(ramPct / 10)) + '░'.repeat(10 - Math.round(ramPct / 10));
 
         const info = {
-            botName:     config.BOT_NAME   || 'ADEEL-MD',
+            botName:     config.BOT_NAME   || 'TESLA-XPACE',
             ownerName:   config.OWNER_NAME || 'DEVELOPER',
             prefix:      config.PREFIX     || '.',
             mode:        config.MODE       || 'public',
