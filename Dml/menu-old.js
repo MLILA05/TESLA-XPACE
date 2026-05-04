@@ -27,46 +27,30 @@ cmd({
         const prefix = config.PREFIX || ".";
         const mode = config.MODE || "public";
 
-        const menuCaption = `╭━━━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━━━╮
-┃ 𝙿𝚛𝚎𝚖𝚒𝚞𝚖 𝚆𝚑𝚊𝚝𝚜𝚊𝚙𝚙 𝙱𝚘𝚝
-┃ 𝙼𝚞𝚕𝚝𝚒 𝙵𝚞𝚗𝚌𝚝𝚒𝚘𝚗 𝙿𝚊𝚗𝚎𝚕
-╰━━━━━━━━━━━━━━━━━━━━━━╯
+        const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━╮
+┃ Premium WhatsApp Bot
+╰━━━━━━━━━━━━━━╯
 
-╭━━〔 👤 𝗨𝗦𝗘𝗥 𝗣𝗥𝗢𝗙𝗜𝗟𝗘 〕━━╮
-┃ 𝙽𝚊𝚖𝚎 ➜ TESLA-XPACE
-┃ 𝙱𝚘𝚝 ➜ ${botName}
-┃ 𝙿𝚛𝚎𝚏𝚒𝚡 ➜ ${prefix}
-╰━━━━━━━━━━━━━━━━━━━━━━╯
+👤 USER
+┃ Name: TESLA-XPACE
+┃ Bot: ${botName}
+┃ Prefix: ${prefix}
 
-╭━━〔 📦 𝗠𝗘𝗡𝗨 𝗣𝗔𝗡𝗘𝗟 〕━━╮
-┃ ① 📥 𝘿𝙤𝙬𝙣𝙡𝙤𝙖𝙙
-┃ ② 👥 𝙂𝙧𝙤𝙪𝙥
-┃ ③ 😄 𝙁𝙪𝙣
-┃ ④ 👑 𝙊𝙬𝙣𝙚𝙧
-┃ ⑤ 🤖 𝘼𝙄
-┃ ⑥ 🎎 𝘼𝙣𝙞𝙢𝙚
-┃ ⑦ 🔄 𝘾𝙤𝙣𝙫𝙚𝙧𝙩
-┃ ⑧ 📌 𝙊𝙩𝙝𝙚𝙧
-┃ ⑨ 💞 𝙍𝙚𝙖𝙘𝙩𝙞𝙤𝙣
-┃ ⑩ 🏠 𝙈𝙖𝙞𝙣
-╰━━━━━━━━━━━━━━━━━━━━━━╯
+📦 MENU
+┃ ① Download
+┃ ② Group
+┃ ③ Fun
+┃ ④ Owner
+┃ ⑤ AI
+┃ ⑥ Anime
+┃ ⑦ Convert
+┃ ⑧ Other
+┃ ⑨ Reaction
+┃ ⑩ Main
 
-╭━━〔 ⚡ 𝗦𝗬𝗦𝗧𝗘𝗠 𝗜𝗡𝗙𝗢 〕━━╮
-┃ ⏱️ 𝚄𝚙𝚝𝚒𝚖𝚎 ➜ ${uptime}
-┃ 💾 𝚁𝙰𝙼 ➜ ${ramUsed}MB / ${totalRam}GB
-┃ 🖥️ 𝚂𝚢𝚜𝚝𝚎𝚖 ➜ ${platform}
-┃ 📅 ${currentDate}
-┃ 🕒 ${currentTime}
-╰━━━━━━━━━━━━━━━━━━━━━━╯
+📌 Reply 1-10 to open
 
-╭━━〔 📌 𝗜𝗡𝗦𝗧𝗥𝗨𝗖𝗧𝗜𝗢𝗡 〕━━╮
-┃ 𝚁𝚎𝚙𝚕𝚢 𝚠𝚒𝚝𝚑 𝟷-𝟷𝟶
-┃ 𝙴𝚗𝚝𝚎𝚛 𝙽𝚞𝚖𝚋𝚎𝚛 𝚝𝚘 𝙾𝚙𝚎𝚗
-╰━━━━━━━━━━━━━━━━━━━━━━╯
-
-╭━━〔 ❤️ 𝗣𝗢𝗪𝗘𝗥𝗘𝗗 𝗕𝗬 〕━━╮
-┃ ${config.DESCRIPTION || 'TESLA-XPACE'}
-╰━━━━━━━━━━━━━━━━━━━━━━╯`;
+❤️ ${config.DESCRIPTION || 'TESLA-XPACE'}`;
         const contextInfo = {
             mentionedJid: [m.sender],
             forwardingScore: 999,
