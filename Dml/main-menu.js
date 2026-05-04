@@ -70,7 +70,7 @@ ${"─".repeat(45)}
 ${rows.join("\n")}
 ${"─".repeat(45)}
 📦 Total: *${cat.cmds.length}* commands
-🚀 _DML Tech — Building Future Automation_`.trim();
+🚀 _Dml Tech — Building Future Automation_`.trim();
 }
 
 // ── Main overview menu ────────────────────────────────────────────
@@ -112,10 +112,10 @@ async (conn, mek, m, { from, reply }) => {
         }
 
         const overview = `
-┌────────────────────────────┐
-│  ⚡ ${botName.padEnd(24)} │
-│  Ultimate WhatsApp Bot     │
-└────────────────────────────┘
+┌──────────────────┐
+│  ⚡ ${botName.padEnd(24)} 
+│  Ultimate WhatsApp Bot     
+└──────────────────┘
 
 👤 Owner   » ${owner}
 🔑 Prefix  » [ ${prefix} ]
@@ -125,9 +125,9 @@ ${modeIcon} Mode    » ${mode.toUpperCase()}
 💻 RAM     [${ramBar}] ${ramPct}%
            ${ramUsed}MB / ${totalRam}GB
 
-━━━━━[ 📂 CATEGORIES ]━━━━━━
+━━[ 📂 CATEGORIES ]━━
 ${catRows.join("\n")}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━
 
 💡 *Type the command to open a menu:*
    ${prefix}download  •  ${prefix}ai
