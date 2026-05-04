@@ -1,537 +1,131 @@
-const fs = require('fs');
 const config = require('../config');
 const { cmd, commands } = require('../command');
 const { runtime } = require('../lib/functions');
-const axios = require('axios');
 const os = require('os');
 
 cmd({
     pattern: "menu",
-    desc: "Show interactive menu system",
+    desc: "Button Menu",
     category: "menu",
-    react: "👑",
+    react: "⚡",
     filename: __filename
-}, async (conn, mek, m, { from, reply }) => {
+}, async (conn, mek, m, { from }) => {
     try {
-        // Get real-time data
         const totalCommands = Object.keys(commands).length;
         const uptime = runtime(process.uptime());
         const ramUsed = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
-        const totalRam = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
-        const platform = os.platform();
-        const currentTime = new Date().toLocaleTimeString();
-        const currentDate = new Date().toLocaleDateString();
-        
+
         const botName = config.BOT_NAME || "TESLA-XPACE";
         const ownerName = config.OWNER_NAME || "DEVELOPER";
-        const prefix = config.PREFIX || ".";
-        const mode = config.MODE || "public";
 
-        const menuCaption = `╭─❏ 『 🤖 ${botName} 』 ❏─╮
-│ ᴘʀᴏ ᴡʜᴀᴛsᴀᴘᴘ ʙᴏᴛ
-╰───────────────╯
+        const text = `╭━━━〔 🤖 ${botName} 〕━━━╮
+┃ ⚡ ᴘʀᴇᴍɪᴜᴍ ʙᴏᴛ
+┃ 👤 @${m.sender.split("@")[0]}
+┃ 📦 ${totalCommands} commands
+┃ ⏱️ ${uptime}
+┃ 💾 ${ramUsed} MB
+╰━━━━━━━━━━━━━━━━━━━⬣
 
-╭─✧ 👑 INFO ✧─╮
-│ 👤 🅘🅜🅐🅓
-╰───────────────
- 
-〔1〕  📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ
-〔2〕 👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ
-〔3〕 😄 ғᴜɴ ᴍᴇɴᴜ
-〔4〕 👑 ᴏᴡɴᴇʀ ᴍᴇɴᴜ
-〔5〕 🤖 ᴀɪ ᴍᴇɴᴜ
-〔6〕 🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ
-〔7〕 🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ
-〔8〕 📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ
-〔9〕 💞 ʀᴇᴀᴄᴛɪᴏɴ ᴍᴇɴᴜ
-〔10〕 🏠 ᴍᴀɪɴ ᴍᴇɴɪ
+✨ Select a menu below`;
 
-
-╭──❏ ⚡ USE ❏──╮
-│ ʀᴇᴘʟʏ ᴡɪᴛʜ ɴᴜᴍʙᴇʀ (1-10)
-│ ᴛᴀᴘ & ᴏᴘᴇɴ ᴍᴇɴᴜ 🚀
-╰───────────────╯
-
-╭──❏ 💻 𝐒𝐘𝐒𝐓𝐄𝐌 ❏──╮
-│ 💾 ${ramUsed}MB / ${totalRam}GB
-│ 🖥 ${platform}
-│ 📅 ${currentDate}
-│ 🕒 ${currentTime}
-╰───────────────╯
-╭────❏ ❤️‍🔥 ❏─────╮
-│ᴘᴏᴡᴇʀ ʙʏ TESLA-XPACE
-╰───────────────╯`;
-
-        const contextInfo = {
-            mentionedJid: [m.sender],
-            forwardingScore: 999,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-                newsletterJid: '120363403958418756@newsletter',
-                newsletterName: 'TESLA-XPACE',
-                serverMessageId: 143
-            }
-        };
-
-        // Send menu with image
-        let sentMsg;
-        try {
-            sentMsg = await conn.sendMessage(from, {
-                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' },
-                caption: menuCaption,
-                contextInfo: contextInfo
-            }, { quoted: mek });
-        } catch (e) {
-            sentMsg = await conn.sendMessage(from, {
-                text: menuCaption,
-                contextInfo: contextInfo
-            }, { quoted: mek });
-        }
-        
-        const messageID = sentMsg.key.id;
-
-        // Menu data with double sidebar
-        const menuData = {
-            '1': {
-                title: "📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 📥 ᴄᴏᴍᴍᴀɴᴅs: 44
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔  🌐 sᴏᴄɪᴀʟ ᴍᴇᴅɪᴀ 〕━━━╮
-┃ ᯽ ғᴀᴄᴇʙᴏᴏᴋ [ᴜʀʟ]
-┃ ᯽ ᴅᴏᴡɴʟᴏᴀᴅ [ᴜʀʟ]
-┃ ᯽ ᴍᴇᴅɪᴀғɪʀᴇ [ᴜʀʟ]
-┃ ᯽ ᴛɪᴋᴛᴏᴋ [ᴜʀʟ]
-┃ ᯽ ᴛᴡɪᴛᴛᴇʀ [ᴜʀʟ]
-┃ ᯽ ɪɴsᴛᴀ [ᴜʀʟ]
-┃ ᯽ ᴀᴘᴋ [ᴀᴘᴘ]
-┃ ᯽ ɪᴍɢ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴘɪɴs [ᴜʀʟ]
-┃ ᯽ ᴘɪɴᴛᴇʀᴇsᴛ [ᴜʀʟ]
-┃ ᯽ sᴘᴏᴛɪғʏᴘʟᴀʏ
-┃ ᯽ sᴘʟᴀʏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🎵 ᴍᴜsɪᴄ/ᴠɪᴅᴇᴏ 〕━━━╮
-┃ ᯽ sᴘᴏᴛɪғʏ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴘʟᴀʏ [sᴏɴɢ]
-┃ ᯽ ᴘʟᴀʏ2-10 [sᴏɴɢ]
-┃ ᯽ ᴀᴜᴅɪᴏ [ᴜʀʟ]
-┃ ᯽ ᴠɪᴅᴇᴏ [ᴜʀʟ]
-┃ ᯽ ᴠɪᴅᴇᴏ2-10 [ᴜʀʟ]
-┃ ᯽ ʏᴛᴍᴘ3 [ᴜʀʟ]
-┃ ᯽ ʏᴛᴍᴘ4 [ᴜʀʟ]
-┃ ᯽ sᴏɴɢ [ɴᴀᴍᴇ]
-┃ ᯽ ᴅᴀʀᴀᴍᴀ [ɴᴀᴍᴇ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '2': {
-                title: "👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ",
-                content: `╔════════════════════╗
-┃  ${botName}
-┃  👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-╭━━━〔📊  sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 👥 ᴄᴏᴍᴍᴀɴᴅs: 37
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔🔧 ᴍᴀɴᴀɢᴇᴍᴇɴᴛ 〕━━━╮
-┃ ᯽ ɢʀᴏᴜᴘʟɪɴᴋ
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ2
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ3
-┃ ᯽ ᴀᴅᴅ @ᴜsᴇʀ
-┃ ᯽ ʀᴇᴍᴏᴠᴇ @ᴜsᴇʀ
-┃ ᯽ ᴋɪᴄᴋ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 ⚡ ᴀᴅᴍɪɴ ᴛᴏᴏʟs〕━━━╮
-┃ ᯽ ᴘʀᴏᴍᴏᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ᴅᴇᴍᴏᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ᴅɪsᴍɪss
-┃ ᯽ ʀᴇᴠᴏᴋᴇ
-┃ ᯽ ᴍᴜᴛᴇ [ᴛɪᴍᴇ]
-┃ ᯽ ᴜɴᴍᴜᴛᴇ
-┃ ᯽ ʟᴏᴄᴋɢᴄ
-┃ ᯽ ᴜɴʟᴏᴄᴋɢᴄ
-┃ ᯽ ɢʀᴏᴜᴘᴅᴘ
-┃ ᯽ ʷᵉˡᶜᵒᵐᵉⁱᵐᵍ
-┃ ᯽ ᵃᵘᵗᵒᵃᵖᵖʳᵒᵛᵉ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🏷️ ᴛᴀɢɢɪɴɢ〕━━━╮
-┃ ᯽ ᴛᴀɢ @ᴜsᴇʀ
-┃ ᯽ ʜɪᴅᴇᴛᴀɢ [ᴍsɢ]
-┃ ᯽ ᴛᴀɢᴀʟʟ
-┃ ᯽ ᴛᴀɢᴀᴅᴍɪɴs
-┃ ᯽ ɪɴᴠɪᴛᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '3': {
-                title: "😄 ғᴜɴ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  😄 ғᴜɴ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🎮 ᴄᴏᴍᴍᴀɴᴅs: 24
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🎭 ɪɴᴛᴇʀᴀᴄᴛɪᴠᴇ〕━━━╮
-┃ ᯽ sʜᴀᴘᴀʀ
-┃ ᯽ ʀᴀᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ɪɴsᴜʟᴛ @ᴜsᴇʀ
-┃ ᯽ ʜᴀᴄᴋ @ᴜsᴇʀ
-┃ ᯽ sʜɪᴘ @ᴜsᴇʀ1 @ᴜsᴇʀ2
-┃ ᯽ ᴄʜᴀʀᴀᴄᴛᴇʀ
-┃ ᯽ ᴘɪᴄᴋᴜᴘ
-┃ ᯽ ᴊᴏᴋᴇ
-┃ ᯽ ʸᵗᶜᵒᵐᵐᵉⁿᵗ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 😊 ᴇᴍᴏᴛɪᴏɴs〕━━━╮
-┃ ᯽ ʟᴏᴠᴇ
-┃ ᯽ ʜᴀᴘᴘʏ
-┃ ᯽ sᴀᴅ
-┃ ᯽ ʜᴏᴛ
-┃ ᯽ sʜʏ
-┃ ᯽ ᴋɪss
-┃ ᯽ ʙʀᴏᴋᴇ
-┃ ᯽ ʜᴜʀᴛ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '4': {
-                title: "👑 ᴏᴡɴᴇʀ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🛠️ ᴄᴏᴍᴍᴀɴᴅs: 30
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 💗 ᴜsᴇʀ ᴛᴏᴏʟs〕━━━╮
-┃ ᯽ ʙʟᴏᴄᴋ
-┃ ᯽ ᴜɴʙʟᴏᴄᴋ
-┃ ᯽ ғᴜʟʟᴘᴘ
-┃ ᯽ sᴇᴛᴘᴘ
-┃ ᯽ ʀᴇsᴛᴀʀᴛ
-┃ ᯽ sʜᴜᴛᴅᴏᴡɴ
-┃ ᯽ ᴜᴘᴅᴀᴛᴇᴄᴍᴅ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 ⚠️ ɪɴғᴏ ᴛᴏᴏʟs 〕━━━╮
-┃ ᯽ ɢᴊɪᴅ
-┃ ᯽ ᴊɪᴅ
-┃ ᯽ ʟɪsᴛᴄᴍᴅ
-┃ ᯽ ᴀʟʟᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '5': {
-                title: "🤖 ᴀɪ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🤖 ᴀɪ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🤖 ᴄᴏᴍᴍᴀɴᴅs: 17
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 💬 ᴄʜᴀᴛ ᴀɪ 〕━━━╮
-┃ ᯽ ᴀɪ
-┃ ᯽ ɢᴘᴛ
-┃ ᯽ ɢᴘᴛ2
-┃ ᯽ ɢᴘᴛ3
-┃ ᯽ ɢᴘᴛᴍɪɴɪ
-┃ ᯽ ᴍᴇᴛᴀ
-┃ ᯽ ʙᴀʀᴅ
-┃ ᯽ ғᴇʟᴏ
-┃ ᯽ ɢɪᴛᴀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔  🖼️ ɪᴍᴀɢᴇ ᴀɪ 〕━━━╮
-┃ ᯽ ɪᴍᴀɢɪɴᴇ [ᴛᴇxᴛ]
-┃ ᯽ ɪᴍᴀɢɪɴᴇ2 [ᴛᴇxᴛ]
-┃ ᯽ ᴀɪᴀʀᴛ
-┃ ᯽ ʙʟᴀᴄᴋʙᴏx [ǫᴜᴇʀʏ]
-┃ ᯽ ʟᴜᴍᴀ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴄᴏʟᴏʀɪᴢᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '6': {
-                title: "🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🎎 ᴄᴏᴍᴍᴀɴᴅs: 26
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔🖼️ ɪᴍᴀɢᴇs 〕━━━╮
-┃ ᯽ ᴡᴀɪғᴜ
-┃ ᯽ ɴᴇᴋᴏ
-┃ ᯽ ᴍᴇɢɴᴜᴍɪɴ
-┃ ᯽ ᴍᴀɪᴅ
-┃ ᯽ ʟᴏʟɪ
-┃ ᯽ ᴅᴏɢ
-┃ ᯽ ᴀᴡᴏᴏ
-┃ ᯽ ɢᴀʀʟ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━〔 🎭 ᴄʜᴀʀᴀᴄᴛᴇʀs 〕━━╮
-┃ ᯽ ᴀɴɪᴍᴇɢɪʀʟ
-┃ ᯽ ᴀɴɪᴍᴇɢɪʀʟ1-5
-┃ ᯽ ᴀɴɪᴍᴇ1-5
-┃ ᯽ ғᴏxɢɪʀʟ
-┃ ᯽ ɴᴀʀᴜᴛᴏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '7': {
-                title: "🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🔄 ᴄᴏᴍᴍᴀɴᴅs: 19
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🖼️ ᴍᴇᴅɪᴀ 〕━━━╮
-┃ ᯽ sᴛɪᴄᴋᴇʀ [ɪᴍɢ]
-┃ ᯽ sᴛɪᴄᴋᴇʀ2 [ɪᴍɢ]
-┃ ᯽ ᴇᴍᴏᴊɪᴍɪx 😎+😂
-┃ ᯽ ᴛᴀᴋᴇ [ɴᴀᴍᴇ,ᴛᴇxᴛ]
-┃ ᯽ ᴛᴏᴍᴘ3 [ᴠɪᴅᴇᴏ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🔤 ᴛᴇxᴛ ᴛᴏᴏʟs 〕━━━╮
-┃ ᯽ ғᴀᴋᴇᴄʜᴀᴛ
-┃ ᯽ ғᴀɴᴄʏ [ᴛᴇxᴛ]
-┃ ᯽ ᴛᴛs [ᴛᴇxᴛ]
-┃ ᯽ ᴛʀᴛ [ᴛᴇxᴛ]
-┃ ᯽ ʙᴀsᴇ64 [ᴛᴇxᴛ]
-┃ ᯽ ᴜɴʙᴀsᴇ64 [ᴛᴇxᴛ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '8': {
-                title: "📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 📌 ᴄᴏᴍᴍᴀɴᴅs: 15
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🕒 ᴜᴛɪʟɪᴛɪᴇs 〕━━━╮
-┃ ᯽ ᴛɪᴍᴇɴᴏᴡ
-┃ ᯽ ᴅᴀᴛᴇ
-┃ ᯽ ᴄᴏᴜɴᴛ [ɴᴜᴍ]
-┃ ᯽ ᴄᴀʟᴄᴜʟᴀᴛᴇ [ᴇxᴘʀ]
-┃ ᯽ ᴄᴏᴜɴᴛx
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🎲 ʀᴀɴᴅᴏᴍ〕━━━╮
-┃ ᯽ 𝚒𝚙𝚑𝚘𝚗𝚎𝚌𝚑𝚊𝚝
-┃ ᯽ ғʟɪᴘ
-┃ ᯽ ᴄᴏɪɴғʟɪᴘ
-┃ ᯽ ʀᴄᴏʟᴏʀ
-┃ ᯽ ʀᴏʟʟ
-┃ ᯽ ғᴀᴄᴛ
-┃ ᯽ ʷᵉˡᶜᵒᵐᵉⁱᵐᵍ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈᵃˡˡ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈᵍʳᵒᵘᵖ
-┃ ᯽ sᴀᴠᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🔍 sᴇᴀʀᴄʜ 〕━━━╮
-┃ ᯽ ᴅᴇғɪɴᴇ [ᴡᴏʀᴅ]
-┃ ᯽ ɴᴇᴡs [ǫᴜᴇʀʏ]
-┃ ᯽ ᴍᴏᴠɪᴇ [ɴᴀᴍᴇ]
-┃ ᯽ ᴡᴇᴀᴛʜᴇʀ [ʟᴏᴄ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '9': {
-                title: "💞 ʀᴇᴀᴄᴛɪᴏɴs ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  💞 ʀᴇᴀᴄᴛɪᴏɴs ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 💞 ᴄᴏᴍᴍᴀɴᴅs: 26
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 💗 ᴀғғᴇᴄᴛɪᴏɴ 〕━━━╮
-┃ ᯽ ᴄᴜᴅᴅʟᴇ @ᴜsᴇʀ
-┃ ᯽ ʜᴜɢ @ᴜsᴇʀ
-┃ ᯽ ᴋɪss @ᴜsᴇʀ
-┃ ᯽ ʟɪᴄᴋ @ᴜsᴇʀ
-┃ ᯽ ᴘᴀᴛ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 😄  ғᴜɴɴʏ 〕━━━╮
-┃ ᯽ ʙᴜʟʟʏ @ᴜsᴇʀ
-┃ ᯽ ʙᴏɴᴋ @ᴜsᴇʀ
-┃ ᯽ ʏᴇᴇᴛ @ᴜsᴇʀ
-┃ ᯽ sʟᴀᴘ @ᴜsᴇʀ
-┃ ᯽ ᴋɪʟʟ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔😊 ᴇxᴘʀᴇssɪᴏɴs 〕━━━╮
-┃ ᯽ ʙʟᴜsʜ @ᴜsᴇʀ
-┃ ᯽ sᴍɪʟᴇ @ᴜsᴇʀ
-┃ ᯽ ʜᴀᴘᴘʏ @ᴜsᴇʀ
-┃ ᯽ ᴡɪɴᴋ @ᴜsᴇʀ
-┃ ᯽ ᴘᴏᴋᴇ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '10': {
-                title: "🏠 ᴍᴀɪɴ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🏠 ᴍᴀɪɴ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🏠 ᴄᴏᴍᴍᴀɴᴅs: 10
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 🤖 ʙᴏᴛ ɪɴғᴏ 〕━━━╮
-┃ ᯽ ᴘɪɴɢ
-┃ ᯽ ʟɪᴠᴇ
-┃ ᯽ ᴀʟɪᴠᴇ
-┃ ᯽ ʀᴜɴᴛɪᴍᴇ
-┃ ᯽ ᴜᴘᴛɪᴍᴇ
-┃ ᯽ ʀᴇᴘᴏ
-┃ ᯽ ᴏᴡɴᴇʀ
-┃ ᯽ ʙɪᴏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-╭━━━〔 ⚙️ ᴄᴏɴᴛʀᴏʟs 〕━━━╮
-┃ ᯽ ᴍᴇɴᴜ
-┃ ᯽ ᴍᴇɴᴜ2
-┃ ᯽ ʀᴇsᴛᴀʀᴛ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-
-> ${config.DESCRIPTION || 'TESLA-XPACE'}`,
-                image: true
-            }
-        };
-
-        // Message handler
-        const handler = async (msgData) => {
-            try {
-                const receivedMsg = msgData.messages[0];
-                if (!receivedMsg?.message || !receivedMsg.key?.remoteJid) return;
-
-                const isReplyToMenu = receivedMsg.message.extendedTextMessage?.contextInfo?.stanzaId === messageID;
-                
-                if (isReplyToMenu) {
-                    const receivedText = receivedMsg.message.conversation || 
-                                      receivedMsg.message.extendedTextMessage?.text;
-                    const senderID = receivedMsg.key.remoteJid;
-
-                    if (menuData[receivedText]) {
-                        const selectedMenu = menuData[receivedText];
-                        
-                        try {
-                            await conn.sendMessage(senderID, {
-                                image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' },
-                                caption: selectedMenu.content,
-                                contextInfo: contextInfo
-                            }, { quoted: receivedMsg });
-
-                            await conn.sendMessage(senderID, {
-                                react: { text: '✅', key: receivedMsg.key }
-                            });
-
-                        } catch (e) {
-                            await conn.sendMessage(senderID, {
-                                text: selectedMenu.content,
-                                contextInfo: contextInfo
-                            }, { quoted: receivedMsg });
-                        }
-
-                    } else {
-                        await conn.sendMessage(senderID, {
-                            text: `❌ ɪɴᴠᴀʟɪᴅ ᴏᴘᴛɪᴏɴ!\n\nᴘʟᴇᴀsᴇ ʀᴇᴘʟʏ ᴡɪᴛʜ ᴀ ɴᴜᴍʙᴇʀ ʙᴇᴛᴡᴇᴇɴ 1-10\n\n> ${config.DESCRIPTION || 'ᴍᴀғɪᴀ-ᴀᴅᴇᴇʟ'}`,
-                            contextInfo: contextInfo
-                        }, { quoted: receivedMsg });
-                    }
+        // LIST MENU (BEST)
+        const listMessage = {
+            text,
+            footer: "⚡ Powered By " + botName,
+            title: "📂 MENU LIST",
+            buttonText: "OPEN MENU",
+            sections: [
+                {
+                    title: "MAIN MENUS",
+                    rows: [
+                        { title: "📥 Download Menu", rowId: "menu_1" },
+                        { title: "👥 Group Menu", rowId: "menu_2" },
+                        { title: "😄 Fun Menu", rowId: "menu_3" },
+                        { title: "👑 Owner Menu", rowId: "menu_4" },
+                        { title: "🤖 AI Menu", rowId: "menu_5" },
+                        { title: "🎎 Anime Menu", rowId: "menu_6" },
+                        { title: "🔄 Convert Menu", rowId: "menu_7" },
+                        { title: "📌 Other Menu", rowId: "menu_8" },
+                        { title: "💞 Reaction Menu", rowId: "menu_9" },
+                        { title: "🏠 Main Menu", rowId: "menu_10" }
+                    ]
                 }
+            ]
+        };
+
+        await conn.sendMessage(from, listMessage, { quoted: mek });
+
+        // HANDLER
+        const handler = async (msg) => {
+            try {
+                const m = msg.messages[0];
+                if (!m.message) return;
+
+                const selected =
+                    m.message.listResponseMessage?.singleSelectReply?.selectedRowId;
+
+                if (!selected) return;
+
+                let replyText = "❌ Invalid option";
+
+                switch (selected) {
+                    case "menu_1":
+                        replyText = "📥 DOWNLOAD MENU\n\nfacebook\ntiktok\nplay\nytmp3";
+                        break;
+
+                    case "menu_2":
+                        replyText = "👥 GROUP MENU\n\nadd\nremove\npromote\ndemote";
+                        break;
+
+                    case "menu_3":
+                        replyText = "😄 FUN MENU\n\njoke\npickup\ninsult\nrate";
+                        break;
+
+                    case "menu_4":
+                        replyText = "👑 OWNER MENU\n\nrestart\nshutdown\nblock";
+                        break;
+
+                    case "menu_5":
+                        replyText = "🤖 AI MENU\n\nai\ngpt\nimagine";
+                        break;
+
+                    case "menu_6":
+                        replyText = "🎎 ANIME MENU\n\nwaifu\nneko\nloli";
+                        break;
+
+                    case "menu_7":
+                        replyText = "🔄 CONVERT MENU\n\nsticker\ntomp3\ntts";
+                        break;
+
+                    case "menu_8":
+                        replyText = "📌 OTHER MENU\n\ntime\ndate\ncalc";
+                        break;
+
+                    case "menu_9":
+                        replyText = "💞 REACTION MENU\n\nhug\nkiss\nslap";
+                        break;
+
+                    case "menu_10":
+                        replyText = "🏠 MAIN MENU\n\nmenu\nping\nalive";
+                        break;
+                }
+
+                await conn.sendMessage(m.key.remoteJid, {
+                    text: replyText
+                }, { quoted: m });
+
             } catch (e) {
-                console.log('Handler error:', e);
+                console.log(e);
             }
         };
 
         conn.ev.on("messages.upsert", handler);
+
         setTimeout(() => {
             conn.ev.off("messages.upsert", handler);
-        }, 300000);
+        }, 180000);
 
     } catch (e) {
-        console.error('Menu Error:', e);
-        reply(`❌ ᴍᴇɴᴜ ᴇʀʀᴏʀ. ᴘʟᴇᴀsᴇ ᴛʀʏ ᴀɢᴀɪɴ.`);
+        console.log(e);
     }
 });
