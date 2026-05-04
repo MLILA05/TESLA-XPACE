@@ -96,394 +96,352 @@ cmd({
         const messageID = sentMsg.key.id;
 
         // Menu data with double sidebar
-        const menuData = {
-            '1': {
-                title: "📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+       const menuData = {
+'1': {
+title: "📥 ᴅᴏᴡɴʟᴏᴀᴅ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 📥 ᴄᴏᴍᴍᴀɴᴅs: 44
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📥 HEADLINE: DOWNLOAD MENU
 
-╭━━━〔  🌐 sᴏᴄɪᴀʟ ᴍᴇᴅɪᴀ 〕━━━╮
-┃ ᯽ ғᴀᴄᴇʙᴏᴏᴋ [ᴜʀʟ]
-┃ ᯽ ᴅᴏᴡɴʟᴏᴀᴅ [ᴜʀʟ]
-┃ ᯽ ᴍᴇᴅɪᴀғɪʀᴇ [ᴜʀʟ]
-┃ ᯽ ᴛɪᴋᴛᴏᴋ [ᴜʀʟ]
-┃ ᯽ ᴛᴡɪᴛᴛᴇʀ [ᴜʀʟ]
-┃ ᯽ ɪɴsᴛᴀ [ᴜʀʟ]
-┃ ᯽ ᴀᴘᴋ [ᴀᴘᴘ]
-┃ ᯽ ɪᴍɢ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴘɪɴs [ᴜʀʟ]
-┃ ᯽ ᴘɪɴᴛᴇʀᴇsᴛ [ᴜʀʟ]
-┃ ᯽ sᴘᴏᴛɪғʏᴘʟᴀʏ
-┃ ᯽ sᴘʟᴀʏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 📊 Commands: 44
+• ⏱️ Uptime: ${uptime}
 
-╭━━━〔 🎵 ᴍᴜsɪᴄ/ᴠɪᴅᴇᴏ 〕━━━╮
-┃ ᯽ sᴘᴏᴛɪғʏ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴘʟᴀʏ [sᴏɴɢ]
-┃ ᯽ ᴘʟᴀʏ2-10 [sᴏɴɢ]
-┃ ᯽ ᴀᴜᴅɪᴏ [ᴜʀʟ]
-┃ ᯽ ᴠɪᴅᴇᴏ [ᴜʀʟ]
-┃ ᯽ ᴠɪᴅᴇᴏ2-10 [ᴜʀʟ]
-┃ ᯽ ʏᴛᴍᴘ3 [ᴜʀʟ]
-┃ ᯽ ʏᴛᴍᴘ4 [ᴜʀʟ]
-┃ ᯽ sᴏɴɢ [ɴᴀᴍᴇ]
-┃ ᯽ ᴅᴀʀᴀᴍᴀ [ɴᴀᴍᴇ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🌐 TRENDING SERVICES
+───────────────────
+▪ Facebook [URL]
+▪ Download [URL]
+▪ MediaFire [URL]
+▪ TikTok [URL]
+▪ Twitter [URL]
+▪ Instagram [URL]
+▪ APK [APP]
+▪ Image [QUERY]
+▪ Pins [URL]
+▪ Pinterest [URL]
+▪ SpotifyPlay
+▪ Splay
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '2': {
-                title: "👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ",
-                content: `╔════════════════════╗
-┃  ${botName}
-┃  👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
-╭━━━〔📊  sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 👥 ᴄᴏᴍᴍᴀɴᴅs: 37
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🎵 MEDIA DESK
+───────────────────
+▪ Spotify [QUERY]
+▪ Play [SONG]
+▪ Play2-10 [SONG]
+▪ Audio [URL]
+▪ Video [URL]
+▪ Video2-10 [URL]
+▪ YTMP3 [URL]
+▪ YTMP4 [URL]
+▪ Song [NAME]
+▪ Darama [NAME]
 
-╭━━━〔🔧 ᴍᴀɴᴀɢᴇᴍᴇɴᴛ 〕━━━╮
-┃ ᯽ ɢʀᴏᴜᴘʟɪɴᴋ
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ2
-┃ ᯽ ᴋɪᴄᴋᴀʟʟ3
-┃ ᯽ ᴀᴅᴅ @ᴜsᴇʀ
-┃ ᯽ ʀᴇᴍᴏᴠᴇ @ᴜsᴇʀ
-┃ ᯽ ᴋɪᴄᴋ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔 ⚡ ᴀᴅᴍɪɴ ᴛᴏᴏʟs〕━━━╮
-┃ ᯽ ᴘʀᴏᴍᴏᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ᴅᴇᴍᴏᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ᴅɪsᴍɪss
-┃ ᯽ ʀᴇᴠᴏᴋᴇ
-┃ ᯽ ᴍᴜᴛᴇ [ᴛɪᴍᴇ]
-┃ ᯽ ᴜɴᴍᴜᴛᴇ
-┃ ᯽ ʟᴏᴄᴋɢᴄ
-┃ ᯽ ᴜɴʟᴏᴄᴋɢᴄ
-┃ ᯽ ɢʀᴏᴜᴘᴅᴘ
-┃ ᯽ ʷᵉˡᶜᵒᵐᵉⁱᵐᵍ
-┃ ᯽ ᵃᵘᵗᵒᵃᵖᵖʳᵒᵛᵉ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'2': {
+title: "👥 ɢʀᴏᴜᴘ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-╭━━━〔 🏷️ ᴛᴀɢɢɪɴɢ〕━━━╮
-┃ ᯽ ᴛᴀɢ @ᴜsᴇʀ
-┃ ᯽ ʜɪᴅᴇᴛᴀɢ [ᴍsɢ]
-┃ ᯽ ᴛᴀɢᴀʟʟ
-┃ ᯽ ᴛᴀɢᴀᴅᴍɪɴs
-┃ ᯽ ɪɴᴠɪᴛᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+👥 HEADLINE: GROUP CONTROL
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '3': {
-                title: "😄 ғᴜɴ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  😄 ғᴜɴ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 👥 Commands: 37
+• ⏱️ Uptime: ${uptime}
 
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🎮 ᴄᴏᴍᴍᴀɴᴅs: 24
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🔧 MANAGEMENT DESK
+───────────────────
+▪ Grouplink
+▪ Kickall / Kickall2 / Kickall3
+▪ Add @user
+▪ Remove @user
+▪ Kick @user
 
-╭━━━〔 🎭 ɪɴᴛᴇʀᴀᴄᴛɪᴠᴇ〕━━━╮
-┃ ᯽ sʜᴀᴘᴀʀ
-┃ ᯽ ʀᴀᴛᴇ @ᴜsᴇʀ
-┃ ᯽ ɪɴsᴜʟᴛ @ᴜsᴇʀ
-┃ ᯽ ʜᴀᴄᴋ @ᴜsᴇʀ
-┃ ᯽ sʜɪᴘ @ᴜsᴇʀ1 @ᴜsᴇʀ2
-┃ ᯽ ᴄʜᴀʀᴀᴄᴛᴇʀ
-┃ ᯽ ᴘɪᴄᴋᴜᴘ
-┃ ᯽ ᴊᴏᴋᴇ
-┃ ᯽ ʸᵗᶜᵒᵐᵐᵉⁿᵗ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+⚡ ADMIN BULLETIN
+───────────────────
+▪ Promote / Demote
+▪ Dismiss / Revoke
+▪ Mute [time] / Unmute
+▪ LockGC / UnlockGC
+▪ GroupDP
+▪ WelcomeImg
+▪ AutoApprove
 
-╭━━━〔 😊 ᴇᴍᴏᴛɪᴏɴs〕━━━╮
-┃ ᯽ ʟᴏᴠᴇ
-┃ ᯽ ʜᴀᴘᴘʏ
-┃ ᯽ sᴀᴅ
-┃ ᯽ ʜᴏᴛ
-┃ ᯽ sʜʏ
-┃ ᯽ ᴋɪss
-┃ ᯽ ʙʀᴏᴋᴇ
-┃ ᯽ ʜᴜʀᴛ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🏷️ TAGGING SYSTEM
+───────────────────
+▪ Tag @user
+▪ HideTag [MSG]
+▪ TagAll
+▪ TagAdmins
+▪ Invite
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '4': {
-                title: "👑 ᴏᴡɴᴇʀ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🛠️ ᴄᴏᴍᴍᴀɴᴅs: 30
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'3': {
+title: "😄 ғᴜɴ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-╭━━━〔 💗 ᴜsᴇʀ ᴛᴏᴏʟs〕━━━╮
-┃ ᯽ ʙʟᴏᴄᴋ
-┃ ᯽ ᴜɴʙʟᴏᴄᴋ
-┃ ᯽ ғᴜʟʟᴘᴘ
-┃ ᯽ sᴇᴛᴘᴘ
-┃ ᯽ ʀᴇsᴛᴀʀᴛ
-┃ ᯽ sʜᴜᴛᴅᴏᴡɴ
-┃ ᯽ ᴜᴘᴅᴀᴛᴇᴄᴍᴅ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+😄 HEADLINE: FUN ZONE
 
-╭━━━〔 ⚠️ ɪɴғᴏ ᴛᴏᴏʟs 〕━━━╮
-┃ ᯽ ɢᴊɪᴅ
-┃ ᯽ ᴊɪᴅ
-┃ ᯽ ʟɪsᴛᴄᴍᴅ
-┃ ᯽ ᴀʟʟᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 🎮 Commands: 24
+• ⏱️ Uptime: ${uptime}
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '5': {
-                title: "🤖 ᴀɪ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🤖 ᴀɪ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🎭 ENTERTAINMENT
+───────────────────
+▪ Shapar
+▪ Rate @user
+▪ Insult @user
+▪ Hack @user
+▪ Ship @user1 @user2
+▪ Character
+▪ Pickup
+▪ Joke
+▪ YTComment
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🤖 ᴄᴏᴍᴍᴀɴᴅs: 17
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+😊 EMOTIONS PANEL
+───────────────────
+▪ Love
+▪ Happy
+▪ Sad
+▪ Hot
+▪ Shy
+▪ Kiss
+▪ Broke
+▪ Hurt
 
-╭━━━〔 💬 ᴄʜᴀᴛ ᴀɪ 〕━━━╮
-┃ ᯽ ᴀɪ
-┃ ᯽ ɢᴘᴛ
-┃ ᯽ ɢᴘᴛ2
-┃ ᯽ ɢᴘᴛ3
-┃ ᯽ ɢᴘᴛᴍɪɴɪ
-┃ ᯽ ᴍᴇᴛᴀ
-┃ ᯽ ʙᴀʀᴅ
-┃ ᯽ ғᴇʟᴏ
-┃ ᯽ ɢɪᴛᴀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔  🖼️ ɪᴍᴀɢᴇ ᴀɪ 〕━━━╮
-┃ ᯽ ɪᴍᴀɢɪɴᴇ [ᴛᴇxᴛ]
-┃ ᯽ ɪᴍᴀɢɪɴᴇ2 [ᴛᴇxᴛ]
-┃ ᯽ ᴀɪᴀʀᴛ
-┃ ᯽ ʙʟᴀᴄᴋʙᴏx [ǫᴜᴇʀʏ]
-┃ ᯽ ʟᴜᴍᴀ [ǫᴜᴇʀʏ]
-┃ ᯽ ᴄᴏʟᴏʀɪᴢᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'4': {
+title: "👑 ᴏᴡɴᴇʀ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '6': {
-                title: "🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+👑 HEADLINE: OWNER CONTROL
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🎎 ᴄᴏᴍᴍᴀɴᴅs: 26
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 🛠️ Commands: 30
+• ⏱️ Uptime: ${uptime}
 
-╭━━━〔🖼️ ɪᴍᴀɢᴇs 〕━━━╮
-┃ ᯽ ᴡᴀɪғᴜ
-┃ ᯽ ɴᴇᴋᴏ
-┃ ᯽ ᴍᴇɢɴᴜᴍɪɴ
-┃ ᯽ ᴍᴀɪᴅ
-┃ ᯽ ʟᴏʟɪ
-┃ ᯽ ᴅᴏɢ
-┃ ᯽ ᴀᴡᴏᴏ
-┃ ᯽ ɢᴀʀʟ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+💗 USER TOOLS
+───────────────────
+▪ Block / Unblock
+▪ FullPP / SetPP
+▪ Restart / Shutdown
+▪ UpdateCMD
 
-╭━━〔 🎭 ᴄʜᴀʀᴀᴄᴛᴇʀs 〕━━╮
-┃ ᯽ ᴀɴɪᴍᴇɢɪʀʟ
-┃ ᯽ ᴀɴɪᴍᴇɢɪʀʟ1-5
-┃ ᯽ ᴀɴɪᴍᴇ1-5
-┃ ᯽ ғᴏxɢɪʀʟ
-┃ ᯽ ɴᴀʀᴜᴛᴏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+⚠️ INFO DESK
+───────────────────
+▪ GJID
+▪ JID
+▪ ListCMD
+▪ AllMenu
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '7': {
-                title: "🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔  📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🔄 ᴄᴏᴍᴍᴀɴᴅs: 19
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'5': {
+title: "🤖 ᴀɪ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-╭━━━〔 🖼️ ᴍᴇᴅɪᴀ 〕━━━╮
-┃ ᯽ sᴛɪᴄᴋᴇʀ [ɪᴍɢ]
-┃ ᯽ sᴛɪᴄᴋᴇʀ2 [ɪᴍɢ]
-┃ ᯽ ᴇᴍᴏᴊɪᴍɪx 😎+😂
-┃ ᯽ ᴛᴀᴋᴇ [ɴᴀᴍᴇ,ᴛᴇxᴛ]
-┃ ᯽ ᴛᴏᴍᴘ3 [ᴠɪᴅᴇᴏ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🤖 HEADLINE: AI CENTER
 
-╭━━━〔 🔤 ᴛᴇxᴛ ᴛᴏᴏʟs 〕━━━╮
-┃ ᯽ ғᴀᴋᴇᴄʜᴀᴛ
-┃ ᯽ ғᴀɴᴄʏ [ᴛᴇxᴛ]
-┃ ᯽ ᴛᴛs [ᴛᴇxᴛ]
-┃ ᯽ ᴛʀᴛ [ᴛᴇxᴛ]
-┃ ᯽ ʙᴀsᴇ64 [ᴛᴇxᴛ]
-┃ ᯽ ᴜɴʙᴀsᴇ64 [ᴛᴇxᴛ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 🤖 Commands: 17
+• ⏱️ Uptime: ${uptime}
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '8': {
-                title: "📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+💬 CHAT AI
+───────────────────
+▪ AI / GPT / GPT2 / GPT3
+▪ GPTMini / Meta / Bard
+▪ Felo / Gita
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 📌 ᴄᴏᴍᴍᴀɴᴅs: 15
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🖼️ IMAGE AI
+───────────────────
+▪ Imagine [TEXT]
+▪ Imagine2 [TEXT]
+▪ AIArt
+▪ Blackbox [QUERY]
+▪ Luma [QUERY]
+▪ Colorize
 
-╭━━━〔 🕒 ᴜᴛɪʟɪᴛɪᴇs 〕━━━╮
-┃ ᯽ ᴛɪᴍᴇɴᴏᴡ
-┃ ᯽ ᴅᴀᴛᴇ
-┃ ᯽ ᴄᴏᴜɴᴛ [ɴᴜᴍ]
-┃ ᯽ ᴄᴀʟᴄᴜʟᴀᴛᴇ [ᴇxᴘʀ]
-┃ ᯽ ᴄᴏᴜɴᴛx
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔 🎲 ʀᴀɴᴅᴏᴍ〕━━━╮
-┃ ᯽ 𝚒𝚙𝚑𝚘𝚗𝚎𝚌𝚑𝚊𝚝
-┃ ᯽ ғʟɪᴘ
-┃ ᯽ ᴄᴏɪɴғʟɪᴘ
-┃ ᯽ ʀᴄᴏʟᴏʀ
-┃ ᯽ ʀᴏʟʟ
-┃ ᯽ ғᴀᴄᴛ
-┃ ᯽ ʷᵉˡᶜᵒᵐᵉⁱᵐᵍ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈᵃˡˡ
-┃ ᯽ ᶠᵒʳʷᵃʳᵈᵍʳᵒᵘᵖ
-┃ ᯽ sᴀᴠᴇ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'6': {
+title: "🎎 ᴀɴɪᴍᴇ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-╭━━━〔 🔍 sᴇᴀʀᴄʜ 〕━━━╮
-┃ ᯽ ᴅᴇғɪɴᴇ [ᴡᴏʀᴅ]
-┃ ᯽ ɴᴇᴡs [ǫᴜᴇʀʏ]
-┃ ᯽ ᴍᴏᴠɪᴇ [ɴᴀᴍᴇ]
-┃ ᯽ ᴡᴇᴀᴛʜᴇʀ [ʟᴏᴄ]
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🎎 HEADLINE: ANIME ZONE
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '9': {
-                title: "💞 ʀᴇᴀᴄᴛɪᴏɴs ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  💞 ʀᴇᴀᴄᴛɪᴏɴs ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 🎎 Commands: 26
+• ⏱️ Uptime: ${uptime}
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 💞 ᴄᴏᴍᴍᴀɴᴅs: 26
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🖼️ ANIME IMAGES
+───────────────────
+▪ Waifu / Neko / Megnumin
+▪ Maid / Loli / Dog
+▪ Awoo / Girl
 
-╭━━━〔 💗 ᴀғғᴇᴄᴛɪᴏɴ 〕━━━╮
-┃ ᯽ ᴄᴜᴅᴅʟᴇ @ᴜsᴇʀ
-┃ ᯽ ʜᴜɢ @ᴜsᴇʀ
-┃ ᯽ ᴋɪss @ᴜsᴇʀ
-┃ ᯽ ʟɪᴄᴋ @ᴜsᴇʀ
-┃ ᯽ ᴘᴀᴛ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🎭 CHARACTERS
+───────────────────
+▪ AnimeGirl / 1-5
+▪ Anime 1-5
+▪ FoxGirl
+▪ Naruto
 
-╭━━━〔 😄  ғᴜɴɴʏ 〕━━━╮
-┃ ᯽ ʙᴜʟʟʏ @ᴜsᴇʀ
-┃ ᯽ ʙᴏɴᴋ @ᴜsᴇʀ
-┃ ᯽ ʏᴇᴇᴛ @ᴜsᴇʀ
-┃ ᯽ sʟᴀᴘ @ᴜsᴇʀ
-┃ ᯽ ᴋɪʟʟ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
-╭━━━〔😊 ᴇxᴘʀᴇssɪᴏɴs 〕━━━╮
-┃ ᯽ ʙʟᴜsʜ @ᴜsᴇʀ
-┃ ᯽ sᴍɪʟᴇ @ᴜsᴇʀ
-┃ ᯽ ʜᴀᴘᴘʏ @ᴜsᴇʀ
-┃ ᯽ ᴡɪɴᴋ @ᴜsᴇʀ
-┃ ᯽ ᴘᴏᴋᴇ @ᴜsᴇʀ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+'7': {
+title: "🔄 ᴄᴏɴᴠᴇʀᴛ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
 
-> ${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
-                image: true
-            },
-            '10': {
-                title: "🏠 ᴍᴀɪɴ ᴍᴇɴᴜ",
-                content: `╭━━━━━━━━━━━━━━━━━━╮
-┃  ${botName}
-┃  🏠 ᴍᴀɪɴ ᴍᴇɴᴜ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🔄 HEADLINE: CONVERTER TOOLS
 
-╭━━━〔 📊 sᴛᴀᴛᴜs 〕━━━╮
-┃ 👑 ᴏᴡɴᴇʀ: ${ownerName}
-┃ 🏠 ᴄᴏᴍᴍᴀɴᴅs: 10
-┃ ⏱️ ᴜᴘᴛɪᴍᴇ: ${uptime}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 🔄 Commands: 19
+• ⏱️ Uptime: ${uptime}
 
-╭━━━〔 🤖 ʙᴏᴛ ɪɴғᴏ 〕━━━╮
-┃ ᯽ ᴘɪɴɢ
-┃ ᯽ ʟɪᴠᴇ
-┃ ᯽ ᴀʟɪᴠᴇ
-┃ ᯽ ʀᴜɴᴛɪᴍᴇ
-┃ ᯽ ᴜᴘᴛɪᴍᴇ
-┃ ᯽ ʀᴇᴘᴏ
-┃ ᯽ ᴏᴡɴᴇʀ
-┃ ᯽ ʙɪᴏ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🖼️ MEDIA TOOLS
+───────────────────
+▪ Sticker / Sticker2
+▪ EmojiMix 😎+😂
+▪ Take [name,text]
+▪ ToMP3 [video]
 
-╭━━━〔 ⚙️ ᴄᴏɴᴛʀᴏʟs 〕━━━╮
-┃ ᯽ ᴍᴇɴᴜ
-┃ ᯽ ᴍᴇɴᴜ2
-┃ ᯽ ʀᴇsᴛᴀʀᴛ
-╰━━━━━━━━━━━━━━━━━━━━⬣
+🔤 TEXT TOOLS
+───────────────────
+▪ FakeChat
+▪ Fancy [TEXT]
+▪ TTS
+▪ TRT
+▪ Base64 / Unbase64
 
-> ${config.DESCRIPTION || 'TESLA-XPACE'}`,
-                image: true
-            }
-        };
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
 
+'8': {
+title: "📌 ᴏᴛʜᴇʀ ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
+
+📌 HEADLINE: UTILITIES & SEARCH
+
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 📌 Commands: 15
+• ⏱️ Uptime: ${uptime}
+
+🕒 UTILITIES
+───────────────────
+▪ TimeNow
+▪ Date
+▪ Count / CountX
+▪ Calculate
+
+🎲 RANDOM
+───────────────────
+▪ iPhoneChat
+▪ Flip / CoinFlip
+▪ RColor / Roll
+▪ Fact
+▪ WelcomeImg
+▪ Forward / ForwardAll / ForwardGroup
+▪ Save
+
+🔍 SEARCH DESK
+───────────────────
+▪ Define [WORD]
+▪ News [QUERY]
+▪ Movie [NAME]
+▪ Weather [LOC]
+
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+},
+
+'9': {
+title: "💞 ʀᴇᴀᴄᴛɪᴏɴs ᴍᴇɴᴜ",
+content: `📰 ━━━━━━━━━━━━━━━━━━━
+🗞️  ${botName} DAILY
+━━━━━━━━━━━━━━━━━━━
+
+💞 HEADLINE: REACTIONS HUB
+
+🧾 REPORT
+• 👑 Owner: ${ownerName}
+• 💞 Commands: 26
+• ⏱️ Uptime: ${uptime}
+
+💗 AFFECTION
+───────────────────
+▪ Cuddle / Hug / Kiss
+▪ Lick / Pat
+
+😄 FUNNY
+───────────────────
+▪ Bully / Bonk / Yeet
+▪ Slap / Kill
+
+😊 EXPRESSIONS
+───────────────────
+▪ Blush / Smile / Happy
+▪ Wink / Poke
+
+📰 FOOTER
+━━━━━━━━━━━━━━━━━━━
+${config.DESCRIPTION || '🔥 TESLA-XPACE'}`,
+image: true
+}
+};
+                
         // Message handler
         const handler = async (msgData) => {
             try {
