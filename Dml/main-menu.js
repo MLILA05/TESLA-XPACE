@@ -98,18 +98,12 @@ async (conn, mek, m, { from, reply }) => {
         const mode     = config.MODE       || "public";
         const modeIcon = mode === "public" ? "🌐" : mode === "private" ? "🔒" : "👥";
 
-        // Build category list — 2 columns
+       // Build category list — vertical
         const catKeys = Object.keys(CATEGORIES);
-        const catRows = [];
-        for (let i = 0; i < catKeys.length; i += 2) {
-            const a = CATEGORIES[catKeys[i]];
-            const b = CATEGORIES[catKeys[i + 1]];
-            const leftCmd  = `${prefix}${catKeys[i]}`.padEnd(14);
-            const rightCmd = b ? `${prefix}${catKeys[i + 1]}` : "";
-            const leftLabel  = `${a.icon} ${leftCmd}`.padEnd(22);
-            const rightLabel = b ? `${b.icon} ${rightCmd}` : "";
-            catRows.push(`  ${leftLabel}${rightLabel}`);
-        }
+        const catRows = catKeys.map(key => {
+            const cat = CATEGORIES[key];
+            return `  ${cat.icon} ${`${prefix}${key}`.padEnd(12)} » ${cat.label} (${cat.cmds.length} cmds)`;
+        });
 
         const overview = `
 ┌──────────────────┐
