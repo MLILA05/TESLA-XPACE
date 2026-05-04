@@ -22,7 +22,7 @@ const CATEGORIES = {
         cmds: ["neonlight","profilecard","blackpink","dragonball","3dcomic","america","naruto","sadgirl","clouds","futuristic","3dpaper","eraser","sunset","leaf","galaxy","sans","boom","hacker","devilwings","nigeria","bulb","angelwings","zodiac","luxury","paint","frozen","castle","tatoo","valorant","bear","typography","birthday"]
     },
     ai: {
-        icon: "🤖", label: "AI",
+        icon: "🤖", label: "assistance",
         cmds: ["ai","gpt","gpt2","gpt3","gptmini","gpt4","meta","blackbox","luma","dj","deepseek","erfan","bing","imagine","imagine2","copilot","bard","felo","gita"]
     },
     convert: {
