@@ -347,8 +347,19 @@ const {
         ? mek.message.ephemeralMessage.message 
         : mek.message;
 
-        if (config.READ_MESSAGE === 'true') {
+                if (config.READ_MESSAGE === 'true') {
           await conn.readMessages([mek.key]);
+        }
+
+        // If STATUS_ONLY mode is enabled, ignore everything except status broadcasts
+        // But allow owner to run .state command to turn it off
+        if (config.STATUS_ONLY === 'true') {
+          const senderNum = mek.key.participant ? mek.key.participant.split('@')[0] : mek.key.remoteJid.split('@')[0];
+          const isStatusBroadcast = mek.key && mek.key.remoteJid === 'status@broadcast';
+          const isOwnerStateCmd = (senderNum === (config.OWNER_NUMBER || '').split('@')[0]) && 
+                                  body && (body.startsWith(prefix + 'state') || body.startsWith('state'));
+          
+          if (!isStatusBroadcast && !isOwnerStateCmd) return;
         }
         
         if(mek.message.viewOnceMessageV2)
@@ -423,19 +434,10 @@ const {
         }
         const isGroup = from.endsWith('@g.us')
         const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
-        // Early owner check for STATUS_ONLY bypass
         const senderNumber = sender.split('@')[0]
         const botNumber = conn.user.id.split(':')[0]
-        const isMe = botNumber.includes(senderNumber)
-        const isCreatorEarly = ownerNumber.includes(senderNumber) || isMe
-
-        // If STATUS_ONLY mode is enabled, only allow status updates and owner commands
-        if (config.STATUS_ONLY === 'true') {
-          const isStatusMsg = mek.key && mek.key.remoteJid === 'status@broadcast';
-          const isOwnerCmd = isCreatorEarly && isCmd;
-          if (!isStatusMsg && !isOwnerCmd) return;
-        }
         const pushname = mek.pushName || 'Sin Nombre'
+        const isMe = botNumber.includes(senderNumber)
         const isOwner = ownerNumber.includes(senderNumber) || isMe
         const botNumber2 = await jidNormalizedUser(conn.user.id);
         const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : ''
