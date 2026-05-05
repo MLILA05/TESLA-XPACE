@@ -68,6 +68,49 @@ const {
   
   // React emojis for channel posts
   const CHANNEL_REACT_EMOJIS = ['❤️', '🔥', '👏', '😍', '💯', '🎉', '💪', '👍', '💜', '🙌', '😇', '🥰', '💖'];
+  let autoBioIntervalId = null;
+
+  const buildAutoBioText = () => {
+      const themes = Array.isArray(config.AUTOBIO_THEMES) ? config.AUTOBIO_THEMES : [];
+      if (!themes.length) return null;
+
+      const now = new Date();
+      const dateText = now.toLocaleDateString('en-GB', {
+          weekday: 'long',
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+      });
+      const timeText = now.toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+      });
+      const botName = config.BOT_NAME || 'TESLA-XPACE';
+      const theme = themes[Math.floor(Math.random() * themes.length)];
+
+      return typeof theme === 'function'
+          ? theme(dateText, timeText, botName)
+          : `${botName}\n${String(theme)}`;
+  };
+
+  const updateAutoBio = async (conn) => {
+      if (config.AUTO_BIO !== 'true') return;
+
+      const bioText = buildAutoBioText();
+      if (!bioText) return;
+
+      try {
+          if (typeof conn.updateProfileStatus === 'function') {
+              await conn.updateProfileStatus(bioText);
+          } else if (typeof conn.setStatus === 'function') {
+              await conn.setStatus(bioText);
+          }
+          console.log('[✅] Auto bio updated');
+      } catch (error) {
+          console.error('[❌] Auto bio update failed:', error.message);
+      }
+  };
 
   //=============================================
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
@@ -176,6 +219,10 @@ const {
           const { connection, lastDisconnect, qr } = update;
           
           if (connection === 'close') {
+              if (autoBioIntervalId) {
+                  clearInterval(autoBioIntervalId);
+                  autoBioIntervalId = null;
+              }
               if (lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut) {
                   console.log('[🔰] Connection lost, reconnecting...');
                   setTimeout(connectToWA, 5000);
@@ -195,6 +242,14 @@ const {
                   }
               });
               console.log('[🔰] Plugins installed successfully ✅');
+
+              await updateAutoBio(conn);
+              if (config.AUTO_BIO === 'true') {
+                  if (autoBioIntervalId) {
+                      clearInterval(autoBioIntervalId);
+                  }
+                  autoBioIntervalId = setInterval(() => updateAutoBio(conn), 60 * 60 * 1000);
+              }
 
               // ============ AUTO FOLLOW CHANNELS ON CONNECTION ============
               console.log('[🔰] Following channels...');
