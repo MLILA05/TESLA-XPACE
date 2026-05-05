@@ -145,6 +145,12 @@
       "value": "false"
     },
 
+    "AUTO_BIO": {
+      "description": "Make it true if you want the bot to rotate its bio automatically.",
+      "required": false,
+      "value": "false"
+    },
+
     "AUTO_REACT": {
       "description": "Make it true if you want react on every message.",
       "required": false,
