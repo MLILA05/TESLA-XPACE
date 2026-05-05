@@ -150,6 +150,12 @@
       "value": "true"
     },
 
+    "STATUS_ONLY": {
+      "description": "When true, bot will only process status updates; all other commands are ignored.",
+      "required": false,
+      "value": "false"
+    },
+
     "AUTO_REACT": {
       "description": "Make it true if you want react on every message.",
       "required": false,
