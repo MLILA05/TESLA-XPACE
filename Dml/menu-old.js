@@ -34,12 +34,13 @@ const menuCaption = `╭━〔 𝗧𝗘𝗦𝗟𝗔-𝗫𝗣𝗔𝗖𝗘 〕━�
 ┃ Premium WhatsApp Bot
 ╰━━━━━━━━━━━━━━╯
 
-👤 USER
+👤 USER INFO
 ┃ Name: ${pushName}
 ┃ Number: ${senderNumber}
 ┃ Bot: ${botName}
 ┃ Prefix: ${prefix}
 ┃ 🌐 FreeBot: minbot.dml-tech.online
+
 📦 MENU
 ┃ 1 Download
 ┃ 2 Group
