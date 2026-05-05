@@ -396,20 +396,31 @@ const {
         const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : ''
         
         // ============ FIXED PREFIX HANDLING (EMOJI + TEXT SUPPORT) ============
-        const isCmd = body && body.startsWith(prefix);
-        
         var budy = typeof mek.text == 'string' ? mek.text : false;
-        
-        // Extract command properly
+
+        // Command detection: normal prefix or optional prefixless mode
+        let isCmd = body && body.startsWith(prefix);
+        let withoutPrefix = '';
         let command = '';
+        let args = [];
+        let q = '';
+        let text = '';
+
         if (isCmd) {
-            const withoutPrefix = body.slice(prefix.length).trim();
-            command = withoutPrefix.split(' ').shift().toLowerCase();
+            withoutPrefix = body.slice(prefix.length).trim();
+        } else if (config.NULL_PREFIX === 'true' && body) {
+            // allow commands without prefix when NULL_PREFIX is enabled
+            isCmd = true;
+            withoutPrefix = body.trim();
         }
-        
-        const args = body.trim().split(/ +/).slice(1)
-        const q = args.join(' ')
-        const text = args.join(' ')
+
+        if (withoutPrefix) {
+            const parts = withoutPrefix.split(/ +/);
+            command = parts.shift().toLowerCase();
+            args = parts;
+            q = args.join(' ');
+            text = q;
+        }
         const isGroup = from.endsWith('@g.us')
         const sender = mek.key.fromMe ? (conn.user.id.split(':')[0]+'@s.whatsapp.net' || conn.user.id) : (mek.key.participant || mek.key.remoteJid)
         const senderNumber = sender.split('@')[0]
@@ -552,7 +563,7 @@ const {
         // take commands 
                        
         const events = require('./command')
-        const cmdName = isCmd ? body.slice(prefix.length).trim().split(" ")[0].toLowerCase() : false;
+        const cmdName = isCmd ? (withoutPrefix ? withoutPrefix.split(' ')[0].toLowerCase() : false) : false;
         if (isCmd) {
             const cmd = events.commands.find((cmd) => cmd.pattern === (cmdName)) || events.commands.find((cmd) => cmd.alias && cmd.alias.includes(cmdName))
             if (cmd) {
