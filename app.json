@@ -1,7 +1,7 @@
 {
   "name": "TESLA-XPACE-MD",
   "description": "Javascript WhatsApp bot made by tesla",
-  "logo": "https://files.catbox.moe/xksplb.jpg",
+  "logo": "https://files.catbox.moe/0jvihl.png",
   "keywords": ["TESLA-XPACE"],
   "success_url": "/",
 
@@ -118,13 +118,13 @@
     "MENU_IMAGE_URL": {
       "description": "add url for mention reply and menu if want.",
       "required": false,
-      "value": "https://files.catbox.moe/xksplb.jpg"
+      "value": "https://files.catbox.moe/0jvihl.png"
     },
     
      "DESCRIPTION": {
       "description": "add caption for menu and other",
       "required": false,
-      "value": "*📌 ᴘᴏᴡᴇʀ ʙʏ TESLA-XPACE*"
+      "value": "*📌 POWERED BY TESLA-XPACE*"
     },
 
       "DELETE_LINKS": {
