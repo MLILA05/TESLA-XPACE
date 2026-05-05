@@ -5,7 +5,6 @@
   "keywords": ["TESLA-XPACE"],
   "success_url": "/",
 
-    "stack": "container",
   "env": {
     "SESSION_ID": {
       "description": "Put the session-id here.",
@@ -148,7 +147,7 @@
     "AUTO_BIO": {
       "description": "Make it true if you want the bot to rotate its bio automatically.",
       "required": false,
-      "value": "false"
+      "value": "true"
     },
 
     "AUTO_REACT": {
