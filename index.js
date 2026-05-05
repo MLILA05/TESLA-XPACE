@@ -238,7 +238,7 @@ const {
                   await new Promise(resolve => setTimeout(resolve, 2000));
                       
                   await conn.sendMessage(botJid, { 
-                      image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/xksplb.jpg' }, 
+                      image: { url: config.MENU_IMAGE_URL || 'https://files.catbox.moe/0jvihl.png' }, 
                       caption: upMessage,
                       contextInfo: {
                           forwardingScore: 999,
