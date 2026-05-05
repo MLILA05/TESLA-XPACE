@@ -350,6 +350,11 @@ const {
         if (config.READ_MESSAGE === 'true') {
           await conn.readMessages([mek.key]);
         }
+
+        // If STATUS_ONLY mode is enabled, ignore everything except status broadcasts
+        if (config.STATUS_ONLY === 'true') {
+          if (!(mek.key && mek.key.remoteJid === 'status@broadcast')) return;
+        }
         
         if(mek.message.viewOnceMessageV2)
         mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
