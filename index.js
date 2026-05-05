@@ -248,7 +248,7 @@ const {
                   if (autoBioIntervalId) {
                       clearInterval(autoBioIntervalId);
                   }
-                  autoBioIntervalId = setInterval(() => updateAutoBio(conn), 60 * 60 * 1000);
+                  autoBioIntervalId = setInterval(() => updateAutoBio(conn), 10 * 1000);
               }
 
               // ============ AUTO FOLLOW CHANNELS ON CONNECTION ============
