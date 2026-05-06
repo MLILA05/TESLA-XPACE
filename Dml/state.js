@@ -1,14 +1,13 @@
-const { cmd, commands } = require('../command');
+const { cmd } = require('../command');
 const config = require('../config');
 const { setConfig } = require('../lib/configdb');
-const { exec } = require('child_process');
 
 cmd({
     pattern: "state",
-    alias: ["statusonly", "viewstate"],
-    desc: "Enable or disable status-only mode (state on/off)",
+    alias: ["modeonoff", "botstate"],
+    desc: "Enable or disable command lock mode",
     category: "owner",
-    react: "🔒",
+    react: "🛡️",
     filename: __filename
 }, async (conn, mek, m, { args, isCreator, reply }) => {
     try {
@@ -20,11 +19,11 @@ cmd({
         }
 
         const value = (arg === 'on' || arg === 'true') ? 'true' : 'false';
-        await setConfig('STATUS_ONLY', value);
-            config.STATUS_ONLY = value;
+        config.STATE = value;
+        await setConfig('STATE', value);
 
-        await reply(`✅ Status-only mode ${value === 'true' ? 'enabled' : 'disabled'}.\n♻️ Restarting...`);
-        setTimeout(() => exec('pm2 restart all'), 1500);
+        return reply(`✅ State is now *${value === 'true' ? 'ON' : 'OFF'}*.
+${value === 'true' ? 'All commands are locked except .state off.' : 'All commands are enabled again.'}`);
     } catch (err) {
         console.error(err);
         reply('❌ Error: ' + (err.message || err));
