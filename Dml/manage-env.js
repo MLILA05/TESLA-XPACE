@@ -188,7 +188,7 @@ cmd({ pattern: "antibad" }, async (c,m,x,{args,isCreator,reply})=>{
   reply(toggle("ANTI_BAD_WORD", args[0]));
 });
 
-cmd({ pattern: "read-message" }, async (c,m,x,{args,isCreator,reply})=>{
+cmd({ pattern: "autoread" }, async (c,m,x,{args,isCreator,reply})=>{
   if(!isCreator) return reply(UI.owner);
   reply(toggle("READ_MESSAGE", args[0]));
 });
