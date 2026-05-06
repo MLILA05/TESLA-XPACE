@@ -21,6 +21,7 @@ cmd({
 
         const value = (arg === 'on' || arg === 'true') ? 'true' : 'false';
         await setConfig('STATUS_ONLY', value);
+            config.STATUS_ONLY = value;
 
         await reply(`✅ Status-only mode ${value === 'true' ? 'enabled' : 'disabled'}.\n♻️ Restarting...`);
         setTimeout(() => exec('pm2 restart all'), 1500);
