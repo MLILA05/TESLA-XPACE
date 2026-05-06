@@ -150,8 +150,8 @@
       "value": "true"
     },
 
-    "STATUS_ONLY": {
-      "description": "When true, bot will only process status updates; all other commands are ignored.",
+    "STATE": {
+      "description": "Make it true to lock all commands except .state off.",
       "required": false,
       "value": "false"
     },
