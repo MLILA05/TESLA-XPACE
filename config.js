@@ -61,7 +61,7 @@ module.exports = {
     AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true", // VIEW to status updates?
     AUTO_BIO: process.env.AUTO_BIO || "false", // ture to get auto bio 
     NULL_PREFIX: getConfig("NULL_PREFIX") || "false", // allow commands without prefix when 'true'
-    STATUS_ONLY: getConfig("STATUS_ONLY") || "false", // when 'true' bot only processes status updates
+    STATE: getConfig("STATE") || process.env.STATE || "false", // block all commands when 'true'
     AUTOBIO_THEMES: [
         (d, t, botname) => `⚡ ${botname}\n𝗜 𝗗𝗼𝗻'𝘁 𝗦𝗹𝗲𝗲𝗽, 𝗜 𝗚𝗿𝗶𝗻𝗱 • ${d} ${t}`,
         (d, t, botname) => `🌙 ${botname}\n𝗤𝘂𝗶𝗲𝘁 𝗕𝘂𝘁 𝗔𝗹𝘄𝗮𝘆𝘀 𝗛𝗲𝗿𝗲 • ${d} ${t}`,
