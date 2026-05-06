@@ -351,17 +351,6 @@ const {
           await conn.readMessages([mek.key]);
         }
 
-        // If STATUS_ONLY mode is enabled, ignore everything except status broadcasts
-        // But allow owner to run .state command to turn it off
-        if (config.STATUS_ONLY === 'true') {
-          const senderNum = mek.key.participant ? mek.key.participant.split('@')[0] : mek.key.remoteJid.split('@')[0];
-          const isStatusBroadcast = mek.key && mek.key.remoteJid === 'status@broadcast';
-          const isOwnerStateCmd = (senderNum === (config.OWNER_NUMBER || '').split('@')[0]) && 
-                                  body && (body.startsWith(prefix + 'state') || body.startsWith('state'));
-          
-          if (!isStatusBroadcast && !isOwnerStateCmd) return;
-        }
-        
         if(mek.message.viewOnceMessageV2)
         mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
         
@@ -405,6 +394,17 @@ const {
         const from = mek.key.remoteJid
         const quoted = type == 'extendedTextMessage' && mek.message.extendedTextMessage.contextInfo != null ? mek.message.extendedTextMessage.contextInfo.quotedMessage || [] : []
         const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : (type == 'imageMessage') && mek.message.imageMessage.caption ? mek.message.imageMessage.caption : (type == 'videoMessage') && mek.message.videoMessage.caption ? mek.message.videoMessage.caption : ''
+
+                // If STATUS_ONLY mode is enabled, ignore everything except status broadcasts
+                // But allow owner to run .state command to turn it off
+                if (config.STATUS_ONLY === 'true') {
+                    const senderNum = (mek.key.participant || mek.key.remoteJid || '').split('@')[0];
+                    const isStatusBroadcast = mek.key && mek.key.remoteJid === 'status@broadcast';
+                    const isOwnerStateCmd = senderNum === (config.OWNER_NUMBER || '').split('@')[0] &&
+                                                                    body && (body.startsWith(prefix + 'state') || body.startsWith('state'));
+
+                    if (!isStatusBroadcast && !isOwnerStateCmd) return;
+                }
         
         // ============ FIXED PREFIX HANDLING (EMOJI + TEXT SUPPORT) ============
         var budy = typeof mek.text == 'string' ? mek.text : false;
