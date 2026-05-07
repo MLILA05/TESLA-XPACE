@@ -46,12 +46,12 @@ async (conn, mek, m, { from, quoted, sender, reply }) => {
         currentStyleIndex = (currentStyleIndex + 1) % botNameStyles.length;
 
         const caption = `
-╭━━━〔 ⚡ PING STATUS ⚡ 〕━━━╮
+╭━〔 ⚡ PING STATUS ⚡ 〕━╮
 ┃ 🚀 BOT     : ${fancyBotName}
 ┃ ⚡ SPEED   : ${responseTime}ms
 ┃ 🔥 STATUS  : ONLINE
 ┃ 💫 MODE    : ACTIVE
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━━━━━━╯
 
 > *${reactionEmoji} Ultra Fast Response Detected*
 `;
@@ -100,10 +100,10 @@ async (conn, mek, m, { from, reply }) => {
         await conn.sendMessage(from, {
             image: { url: 'https://files.catbox.moe/ydvgry.png' },
             caption: `
-╭━━━〔 🔥 TESLA-XPACE 🔥 〕━━━╮
+╭━〔 🔥 TESLA-XPACE 🔥 〕━╮
 ┃ ⚡ SPEED : ${ping}ms
 ┃ 🚀 STATUS: ONLINE
-╰━━━━━━━━━━━━━━━━━━━━━━━╯
+╰━━━━━━━━━━━━━━━━╯
 `
         }, { quoted: message });
 
