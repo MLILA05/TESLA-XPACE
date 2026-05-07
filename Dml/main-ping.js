@@ -1,9 +1,8 @@
 const config = require('../config');
 const { cmd, commands } = require('../command');
 
-// Array of different fancy text styles for ADEEL-MD
+// Array of different fancy text styles for TESLA-XPACE
 const botNameStyles = [
-    
     "TESLA-XPACE"
 ];
 
@@ -12,7 +11,7 @@ let currentStyleIndex = 0;
 
 cmd({
     pattern: "ping",
-    alias: ["speed","pong"],
+    alias: ["speed", "pong"],
     use: '.ping',
     desc: "Check bot's response time.",
     category: "main",
@@ -34,22 +33,33 @@ async (conn, mek, m, { from, quoted, sender, reply }) => {
             textEmoji = textEmojis[Math.floor(Math.random() * textEmojis.length)];
         }
 
-        // Send reaction using conn.sendMessage()
+        // React to message
         await conn.sendMessage(from, {
             react: { text: textEmoji, key: mek.key }
         });
 
         const end = new Date().getTime();
-        const responseTime = (end - start) / 1000;
+        const responseTime = end - start;
 
-        // Get current fancy bot name and rotate for next time
+        // Get current fancy bot name
         const fancyBotName = botNameStyles[currentStyleIndex];
         currentStyleIndex = (currentStyleIndex + 1) % botNameStyles.length;
 
-        const text = `> *${fancyBotName} SPEED: ${responseTime.toFixed(2)}ms ${reactionEmoji}*`;
+        const caption = `
+╭━━━〔 ⚡ PING STATUS ⚡ 〕━━━╮
+┃ 🚀 BOT     : ${fancyBotName}
+┃ ⚡ SPEED   : ${responseTime}ms
+┃ 🔥 STATUS  : ONLINE
+┃ 💫 MODE    : ACTIVE
+╰━━━━━━━━━━━━━━━━━━━━━━━╯
 
+> *${reactionEmoji} Ultra Fast Response Detected*
+`;
+
+        // Send image with caption
         await conn.sendMessage(from, {
-            text,
+            image: { url: 'https://files.catbox.moe/ydvgry.png' },
+            caption: caption,
             contextInfo: {
                 mentionedJid: [sender],
                 forwardingScore: 999,
@@ -68,7 +78,7 @@ async (conn, mek, m, { from, quoted, sender, reply }) => {
     }
 });
 
-// ping2 remains unchanged
+// ping2
 cmd({
     pattern: "ping2",
     desc: "Check bot's response time.",
@@ -76,15 +86,29 @@ cmd({
     react: "🍂",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, reply }) => {
     try {
-        const startTime = Date.now()
-        const message = await conn.sendMessage(from, { text: '*PINGING...*' })
-        const endTime = Date.now()
-        const ping = endTime - startTime
-        await conn.sendMessage(from, { text: `*🔥 TESLA-XPACE SPEED : ${ping}ms*` }, { quoted: message })
+        const startTime = Date.now();
+
+        const message = await conn.sendMessage(from, {
+            text: '*PINGING...*'
+        });
+
+        const endTime = Date.now();
+        const ping = endTime - startTime;
+
+        await conn.sendMessage(from, {
+            image: { url: 'https://files.catbox.moe/ydvgry.png' },
+            caption: `
+╭━━━〔 🔥 TESLA-XPACE 🔥 〕━━━╮
+┃ ⚡ SPEED : ${ping}ms
+┃ 🚀 STATUS: ONLINE
+╰━━━━━━━━━━━━━━━━━━━━━━━╯
+`
+        }, { quoted: message });
+
     } catch (e) {
-        console.log(e)
-        reply(`${e}`)
+        console.log(e);
+        reply(`${e}`);
     }
-})
+});
