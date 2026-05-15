@@ -4,8 +4,9 @@
   "description": "A WhatsApp Bot Created By TESLA-XPACE",
   "main": "index.js",
   "engines": {
-    "node": ">=20.x",
-    "npm": ">=10.x"
+  "node": "24.x",
+  "npm": "11.x"
+}
   },
   "scripts": {
     "start": "pm2 start index.js --deep-monitoring --attach --name TESLA-XPACE ",
