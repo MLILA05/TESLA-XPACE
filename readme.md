@@ -3,7 +3,7 @@
 ### 🔹 Step 1: Generate Session ID
 🔐 Pair your WhatsApp device using the server below
 
-<a href="https://pair-tesl-d1b09bcb5d57.herokuapp.com">
+<a https://tesla-pair-e49f85083bed.herokuapp.com">
   <img src="https://img.shields.io/badge/PAIR_DEVICE_SERVER-8A2BE2?style=for-the-badge&logo=whatsapp&logoColor=white">
 </a>
 
